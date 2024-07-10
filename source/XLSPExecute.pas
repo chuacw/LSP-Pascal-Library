@@ -47,7 +47,7 @@ type
     FProcessInformation: TProcessInformation;
     FServer: TIdTCPServer;
     FUseSocket: Boolean;
-    function ExtractAndSendResponceMessages(const AStr: RawByteString): Boolean;
+    function ExtractAndSendResponseMessages(const AStr: RawByteString): Boolean;
     procedure RunServer(const ACommandline: String);
     procedure GetDataFromClient;
     procedure IdTCPServerExecute(AContext: TIdContext);
@@ -97,7 +97,7 @@ begin
     RunServer(FCommandline);
 end;
 
-function TLSPExecuteServerThread.ExtractAndSendResponceMessages(const AStr: RawByteString): Boolean;
+function TLSPExecuteServerThread.ExtractAndSendResponseMessages(const AStr: RawByteString): Boolean;
 const
   CLHeader = 'Content-Length:';
   ContentId = #13#10#13#10+'{';
