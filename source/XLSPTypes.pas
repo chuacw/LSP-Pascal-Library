@@ -6016,10 +6016,13 @@ const
 type
 
   TLSPMessage = class
+  protected
+    class var FId: Integer;
   public
     id: Integer;
     paramObj: TLSPBaseParams;
     errorObj: TLSPBaseParams;
+    constructor Create;
   end;
 
   TLSPResultType = (lsprObject, lsprString, lsprNull, lsprVoid, lsprEmptyArray);
@@ -7639,5 +7642,11 @@ begin
   inherited;
 end;
 
+{ TLSPMessage }
+constructor TLSPMessage.Create;
+begin
+  Inc(FId);
+  Id := FId;
+end;
 end.
 
