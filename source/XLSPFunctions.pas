@@ -199,8 +199,6 @@ begin
 end;
 
 function FilePathToUri(const APath: string): string;
-var
-  s: string;
 begin
   Result := 'file:///' + EncodeUri(APath);
 end;
@@ -327,7 +325,6 @@ var
   LJson: ISuperObject;
   LJObj: IJSONObject;
   LJBool: IJSONBoolean;
-  LJNull: IJSONNull;
   bDelta: Boolean;
   s: string;
 begin
@@ -1104,7 +1101,7 @@ end;
 function JsonCodeLensToObject(const LJson: ISuperObject; var ErrorCode: Integer; var ErrorMessage: string):
     TLSPCodeLensResponse;
 var
-  LArray,LArr2: ISuperArray;
+  LArray: ISuperArray;
   LRange: ISuperObject;
   LArrayO: ISuperObject;
   LMember: IMember;
@@ -1317,7 +1314,7 @@ var
 
   procedure ProcessArray(var items: TObjectList<TLSPCompletionItem>; const arr: ISuperArray);
   var
-    i,j: Integer;
+    j: Integer;
     LArr1: ISuperArray;
     LArrObj,LArrObj1: ISuperObject;
     LMem,LMem1: IMember;
@@ -1328,7 +1325,6 @@ var
     if not Assigned(arr) then Exit;
     if arr.DataType <> dtArray then Exit;
 
-    i := 0;
     for LMem in arr do
     begin
       if LMem.DataType <> dtObject then Continue;
@@ -1497,7 +1493,6 @@ var
       end;
 
       items.Add(item);
-      Inc(i);
     end;
   end;
 
@@ -2210,7 +2205,6 @@ var
   var
     j: Integer;
     LArr: ISuperArray;
-    LArrObj: ISuperObject;
     LMem: IMember;
     LRange: ISuperObject;
   begin
@@ -2894,7 +2888,6 @@ var
   end;
 
 begin
-  Result := nil;
   ErrorCode := 0;
   ErrorMessage := '';
 
@@ -3736,7 +3729,7 @@ function JsonMonikerToObject(const LJson: ISuperObject; var ErrorCode: Integer; 
 var
   LArray: ISuperArray;
   LMember: IMember;
-  s,w: string;
+  s: string;
   i: Integer;
 begin
   Result := nil;
@@ -5729,7 +5722,6 @@ function JsonPrepareRenameResponseToObject(const LJson: ISuperObject; var ErrorC
 var
   LRange: ISuperObject;
   s: string;
-  i: Integer;
 begin
   Result := nil;
   ErrorCode := 0;
@@ -5994,7 +5986,6 @@ var
   s: string;
   i: Integer;
 begin
-  Result := nil;
   ErrorCode := 0;
   ErrorMessage := '';
 
@@ -6330,7 +6321,6 @@ var
     j: Integer;
     supObj: ISuperObject;
     LArr: ISuperArray;
-    LMember: IMember;
   begin
     if member.DataType <> dtObject then Exit;
     supObj := member.AsObject;
@@ -6715,7 +6705,6 @@ function JsonWorkspaceDiagnosticReportToObject(const LJson: ISuperObject; var Er
     string; var retriggerRequest: Boolean): TLSPWorkspaceDiagnosticReport;
 var
   s: string;
-  i: Integer;
   LObject: ISuperObject;
   LArray: ISuperArray;
   LMember: IMember;
@@ -6860,7 +6849,6 @@ begin
       LArray := LJson[s].AsObject.A['items'];
       SetLength(Result.items, LArray.Length);
 
-      i := 0;
       for LMember in LArray do
       begin
         if LMember.DataType <> dtObject then Continue;
@@ -6889,7 +6877,6 @@ begin
       LArray := LJson[s].AsObject.A['items'];
       SetLength(Result.items, LArray.Length);
 
-      i := 0;
       for LMember in LArray do
       begin
         if LMember.DataType <> dtObject then Continue;
