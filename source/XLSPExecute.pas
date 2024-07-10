@@ -27,7 +27,7 @@ uses
 
 type
   TReadFromServerEvent = procedure(Sender: TObject; const AJson: ISuperObject; const APlainText: string) of object;
-  TWriteToServerEvent = procedure(Sender: TObject; var s: RawByteString) of object;
+  TWriteToServerEvent = procedure(Sender: TObject; out s: RawByteString) of object;
   TExitServerEvent = procedure(Sender: TObject; exitcode: Integer) of object;
 
   TLSPExecuteServerThread = class(TThread)

@@ -232,7 +232,7 @@ type
     function GetErrorCodeAsString(typ: Integer): string;
     function GetIdFromPartialResultToken(const LStr: string): Integer;
     procedure OnReadFromServer(Sender: TObject; const AJson: ISuperObject; const APlainText: string);
-    procedure OnWriteToServer(Sender: TObject; var s: RawByteString);
+    procedure OnWriteToServer(Sender: TObject; out s: RawByteString);
     function ProcessServerMessage(const LJson: ISuperObject): Boolean;
     procedure RegisterPartialResultToken(const lspKind: TLSPKind; const token: string);
     procedure RunServer(const ACommandline, ADir: String; const AEnvList: string = ''; const AHost: string = ''; const
@@ -547,7 +547,6 @@ var
   id: Integer;
   i,LKind: Integer;
   method: string;
-  bRequest: Boolean;
   errorCode: Integer;
   errorMessage: string;
   retriggerRequest: Boolean;
@@ -1879,7 +1878,7 @@ begin
   end;
 end;
 
-procedure TLSPClient.OnWriteToServer(Sender: TObject; var s: RawByteString);
+procedure TLSPClient.OnWriteToServer(Sender: TObject; out s: RawByteString);
 begin
   // Send JSON string to server
   s := FJSONString;
@@ -1932,9 +1931,6 @@ begin
 end;
 
 function TLSPClient.GetSyncKind: Integer;
-var
-  sm: string;
-  options: TLSPTextDocumentRegistrationOptions;
 begin
   Result := TLSPTextDocumentSyncKindRec.None;
   if not Assigned(ServerCapabilities.textDocumentSync) then Exit;

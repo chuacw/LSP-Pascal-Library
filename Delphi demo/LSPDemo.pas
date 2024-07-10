@@ -363,7 +363,6 @@ procedure TLSPDemoForm.OnWorkspaceApplyEdit(Sender: TObject; const value: TLSPAp
   var responseValue: TLSPApplyWorkspaceEditResponse; var errorCode: Integer; var errorMessage: string);
 var
   i,j: Integer;
-  sz: string;
   change: TLSPBaseParams;
   edit: TLSPTextEdit;
 begin
@@ -410,8 +409,8 @@ end;
 
 procedure TLSPDemoForm.ApplyChangesToDocument(const newText: string; const range: TLSPRange);
 var
-  s: string;
-  i,n,len: Integer;
+  i: Integer;
+  len: Integer;
 begin
   if range.startPos.line = range.endPos.line then
   begin
@@ -512,7 +511,7 @@ const
   csym: string = '()[]{},.;:"=<>+/\?!|�_�&�`^*%' + #39 + #9 + #32 + #160;
 var
   s: string;
-  x,z,len: Integer;
+  x,z: Integer;
   selStart,selLength: Integer;
   CaretPos: TPoint;
   change: TLSPTextDocumentContentChangeEvent;
@@ -809,7 +808,6 @@ procedure TLSPDemoForm.SendDidChangeDocumentToServer(const filename: string);
 var
   i: Integer;
   syncKind: Integer;
-  ext,sm: string;
   params: TLSPDidChangeTextDocumentParams;
   content: TLSPBaseTextDocumentContentChangeEvent;
 begin
@@ -845,10 +843,7 @@ end;
 
 procedure TLSPDemoForm.SendDidOpenDocumentToServer(const filename: string);
 var
-  ext,sm: string;
-  bIncludeText: Boolean;
   params: TLSPDidOpenTextDocumentParams;
-  options: TLSPTextDocumentRegistrationOptions;
 begin
   if not FLSPClient.IsRequestSupported(lspDidOpenTextDocument) then Exit;
 
@@ -888,7 +883,6 @@ end;
 procedure TLSPDemoForm.SendHoverRequest(const filename: string);
 var
   params: TLSPHoverParams;
-  sw: string;
   i,x,n,cx,cy: Integer;
   pt: TPoint;
   r: LongInt;
@@ -928,7 +922,9 @@ var
 begin
   sz := FServerPath;
   if FServerArguments <> '' then
+    begin
     sz := sz + #32 + FServerArguments;
+    end;
   FLSPClient.Id := 'Omnisharp';
   FLSPClient.RunServer(sz, FInitDir);
   FLSPClient.SendRequest(lspInitialize);
