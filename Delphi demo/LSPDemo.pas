@@ -509,7 +509,7 @@ end;
 
 procedure TLSPDemoForm.InsertCompletionItem(const sn: string);
 const
-  csym: string = '()[]{},.;:"=<>+/\?!|¨_¤&´`^*%' + #39 + #9 + #32 + #160;
+  csym: string = '()[]{},.;:"=<>+/\?!|ï¿½_ï¿½&ï¿½`^*%' + #39 + #9 + #32 + #160;
 var
   s: string;
   x,z,len: Integer;
@@ -822,7 +822,7 @@ begin
   params.textDocument.version := Memo1.Tag + 1;
   Memo1.Tag := Memo1.Tag + 1;
 
-  syncKind := FLSPClient.GetSyncKind(ext);
+  syncKind := FLSPClient.GetSyncKind;
 
   // Set changes
   if syncKind = TLSPTextDocumentSyncKindRec.Incremental then

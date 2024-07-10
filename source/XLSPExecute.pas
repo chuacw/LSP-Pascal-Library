@@ -34,17 +34,14 @@ type
   private
     FCommandline: String;
     FDir: String;
-    FEnvironment: TStringlist;
     FExitCode: LongWord;
     FHost: string;
     FInputRaw: RawByteString;
     FJson: ISuperObject;
     FOnExit: TExitServerEvent;
     FOnWriteToServer: TWriteToServerEvent;
-    FOutAction: Integer;
     FOutPutRaw: RawByteString;
     FOnReadFromServer: TReadFromServerEvent;
-    FOutBuf: TMemoryStream;
     FPlainText: string;
     FPort: Integer;
     FProcessInformation: TProcessInformation;
@@ -107,7 +104,7 @@ const
 var
   s: string;
   w: string;
-  n,nc,ln,len: Integer;
+  n,nc,ln: Integer;
   cx: Integer;
 
   function FindHeader(var len: Integer; const cx: Integer): Integer;
@@ -137,8 +134,6 @@ var
   end;
 
   function FindContent(const hpos: Integer): Integer;
-  var
-    i: Integer;
   begin
     // Find the content of the request/response.
     Result := PosEx(ContentId, s, hpos);
@@ -211,19 +206,14 @@ var
   dBytesRead: DWORD;
   dBytesWrite: DWORD;
   dAvailable: DWORD;
-  LoopExit: DWORD;
-  i: Integer;
   ln: Cardinal;
 begin
   FExitcode := 0;
-  LoopExit := 0;
   try
     with SA do
     begin
-      GetMem(SD, sizeof(SECURITY_DESCRIPTOR));
-      InitializeSecurityDescriptor(SD, SECURITY_DESCRIPTOR_REVISION);
-      SetSecurityDescriptorDacl(SD, True, nil, False);
-      lpSecurityDescriptor := SD;
+      SD := nil;
+      lpSecurityDescriptor := nil;
       nLength := sizeof(SECURITY_ATTRIBUTES);
       bInheritHandle := True;
     end;
@@ -366,6 +356,7 @@ procedure TLSPExecuteServerThread.GetDataFromClient;
 var
   s: RawByteString;
 begin
+  s := '';
   if Assigned(FOnWriteToServer) then
     FOnWriteToServer(Self, s);
   FOutPutRaw := FOutPutRaw + s;
@@ -440,10 +431,8 @@ var
   SI: TStartupInfo;
   SA: TSecurityAttributes;
   SD: PSECURITY_DESCRIPTOR;
-  bExit: Boolean;
 begin
   FExitcode := 0;
-  bExit := False;
 
   with SA do
   begin

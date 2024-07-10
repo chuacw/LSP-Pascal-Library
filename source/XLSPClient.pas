@@ -14,7 +14,7 @@
  * Embarcadero Technologies, Inc is not permitted to use or redistribute
  * this source code without explicit permission.
  *
- * Copyright © 2023 Rickard Johansson. All rights reserved.
+ * Copyright ï¿½ 2023 Rickard Johansson. All rights reserved.
  *
 *)
 
@@ -1910,7 +1910,7 @@ end;
 procedure TLSPClient.RunServer(const ACommandline, ADir: String; const AEnvList: string = ''; const AHost: string = '';
     const APort: Integer = 0; const AUseSocket: Boolean = False);
 begin
-  FServerThread := TLSPExecuteServerThread.Create(ACommandline, ADir, AEnvList);
+  FServerThread := TLSPExecuteServerThread.Create(ACommandline, ADir);
   FServerThread.UseSocket := AUseSocket;
   FServerThread.Host := AHost;
   FServerThread.Port := APort;
