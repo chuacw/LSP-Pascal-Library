@@ -22,7 +22,7 @@ unit XLSPTypes;
 
 interface
 
-uses XSuperJSON, XSuperObject, generics.collections, System.Classes;
+uses XSuperJSON, XSuperObject, System.Generics.Collections, System.Classes;
 
 type
   TLSPBaseParams = class

@@ -14,7 +14,7 @@
  * Embarcadero Technologies, Inc is not permitted to use or redistribute
  * this source code without explicit permission.
  *
- * Copyright © 2021 Rickard Johansson. All rights reserved.
+ * Copyright ï¿½ 2021 Rickard Johansson. All rights reserved.
  *
 *)
 
@@ -23,7 +23,7 @@ unit XLSPExecute;
 interface
 
 uses
-  Classes, Windows, XSuperObject, IdTCPServer, IdContext;
+  System.Classes, Winapi.Windows, XSuperObject, IdTCPServer, IdContext;
 
 type
   TReadFromServerEvent = procedure(Sender: TObject; const AJson: ISuperObject; const APlainText: string) of object;
@@ -42,7 +42,7 @@ type
     FOnWriteToServer: TWriteToServerEvent;
     FOutPutRaw: RawByteString;
     FOnReadFromServer: TReadFromServerEvent;
-    FPlainText: string;
+    FArguments, FPlainText: string;
     FPort: Integer;
     FProcessInformation: TProcessInformation;
     FServer: TIdTCPServer;
@@ -53,11 +53,13 @@ type
     procedure IdTCPServerExecute(AContext: TIdContext);
     procedure RunServerThroughSocket(const ACommandline: String);
     procedure SendToClient;
+    procedure SetArguments(const AArguments: string);
   protected
     procedure Execute; override;
   public
     constructor Create(const ACommandline, ADir: String);
     destructor Destroy; override;
+    property Arguments: string read FArguments write SetArguments;
     property Host: string read FHost write FHost;
     property Port: Integer read FPort write FPort;
     property UseSocket: Boolean read FUseSocket write FUseSocket;
@@ -68,7 +70,7 @@ type
 
 implementation
 
-uses SysUtils, System.StrUtils, IdGlobal;
+uses System.SysUtils, System.StrUtils, IdGlobal;
 
 constructor TLSPExecuteServerThread.Create(const ACommandline, ADir: String);
 begin
@@ -199,6 +201,8 @@ begin
 end;
 
 procedure TLSPExecuteServerThread.RunServer(const ACommandline: String);
+const
+  SCouldNotClosePipe: string = 'Could not close %s pipe!';
 var
   SI: TStartupInfo;
   SA: TSecurityAttributes;
@@ -211,66 +215,89 @@ var
   dBytesWrite: DWORD;
   dAvailable: DWORD;
   ln: Cardinal;
+  LCommandLine: string;
+  PArguments, PCommandLine, LDir: PChar;
 begin
   FExitcode := 0;
   try
     with SA do
     begin
-      SD := nil;
       lpSecurityDescriptor := nil;
       nLength := sizeof(SECURITY_ATTRIBUTES);
       bInheritHandle := True;
     end;
 
-    // Create pipes
-    if not(CreatePipe(outputreadtmp, outputwrite, @SA, 0)) then
-      raise Exception.Create('Could not create pipe!');
+    try
 
-    if not(DuplicateHandle(GetCurrentProcess, outputwrite, GetCurrentProcess,
-      @errorwrite, 0, True, DUPLICATE_SAME_ACCESS)) then
-      raise Exception.Create('Could not create pipe!');
+        // Create pipes
+        if not(CreatePipe(outputreadtmp, outputwrite, @SA, 0)) then
+          raise Exception.Create('Could not create pipe!');
 
-    if not(CreatePipe(inputRead, inputWritetmp, @SA, 0)) then
-      raise Exception.Create('Could not create pipe!');
+        if not(DuplicateHandle(GetCurrentProcess, outputwrite, GetCurrentProcess,
+          @errorwrite, 0, True, DUPLICATE_SAME_ACCESS)) then
+          raise Exception.Create('Could not create pipe!');
 
-    if not(DuplicateHandle(GetCurrentProcess, outputreadtmp,
-      GetCurrentProcess, @read_stdout, 0, False, DUPLICATE_SAME_ACCESS)) then
-      raise Exception.Create('Could not create pipe!');
+        if not(CreatePipe(inputRead, inputWritetmp, @SA, 0)) then
+          raise Exception.Create('Could not create pipe!');
 
-    if not(DuplicateHandle(GetCurrentProcess, inputWritetmp,
-      GetCurrentProcess, @write_stdin, 0, False, DUPLICATE_SAME_ACCESS)) then
-      raise Exception.Create('Could not create pipe!');
+        if not(DuplicateHandle(GetCurrentProcess, outputreadtmp,
+          GetCurrentProcess, @read_stdout, 0, False, DUPLICATE_SAME_ACCESS)) then
+          raise Exception.Create('Could not create pipe!');
 
-    if not CloseHandle(outputreadtmp) then
-      raise Exception.Create('Could not create pipe!');
-    if not CloseHandle(inputWritetmp) then
-      raise Exception.Create('Could not create pipe!');
+        if not(DuplicateHandle(GetCurrentProcess, inputWritetmp,
+          GetCurrentProcess, @write_stdin, 0, False, DUPLICATE_SAME_ACCESS)) then
+          raise Exception.Create('Could not create pipe!');
 
-    GetStartupInfo(SI);
-    with SI do
-    begin
-      cb := SizeOf(SI);
-      dwFlags := STARTF_USESHOWWINDOW or STARTF_USESTDHANDLES;
-      wShowWindow := SW_HIDE;
-      hStdInput := inputRead;
-      hStdOutput := outputwrite;
-      hStdError := errorwrite;
+        if not CloseHandle(outputreadtmp) then
+          raise Exception.Create('Could not create pipe!');
+        if not CloseHandle(inputWritetmp) then
+          raise Exception.Create('Could not create pipe!');
+
+        GetStartupInfo(SI);
+        with SI do
+        begin
+          cb := SizeOf(SI);
+          dwFlags := STARTF_USESHOWWINDOW or STARTF_USESTDHANDLES;
+          wShowWindow := SW_HIDE;
+          hStdInput := inputRead;
+          hStdOutput := outputwrite;
+          hStdError := errorwrite;
+        end;
+
+        // Run LSP server
+        if FDir <> '' then
+          SetCurrentDir(FDir);
+        if FDir = '' then
+          LDir := nil else
+          LDir := PChar(FDir);
+        LCommandLine := ACommandLine;
+        SetLength(LCommandLine, Length(LCommandLine)+(SizeOf(Char)*2));
+        UniqueString(LCommandLine);
+        if FArguments = '' then
+          begin
+            PArguments := PChar(LCommandLine);
+            PCommandLine := nil;
+          end else
+          begin
+            PCommandLine := PChar(LCommandLine);
+            PArguments := PChar(FArguments);
+          end;
+
+        if not CreateProcess(PCommandLine, PArguments, nil, nil, True, NORMAL_PRIORITY_CLASS or CREATE_NO_WINDOW, nil, LDir, SI, FProcessInformation) then
+        begin
+          var LLastMsg := SysErrorMessage(GetLastError);
+          raise Exception.CreateFmt('Could not run language server due to %s!',
+            [LLastMsg]);
+        end;
+
+    finally
+      if not CloseHandle(outputwrite) then
+        raise Exception.CreateFmt(SCouldNotClosePipe, ['write']);
+      if not CloseHandle(inputRead) then
+        raise Exception.CreateFmt(SCouldNotClosePipe, ['read']);
+      if not CloseHandle(errorwrite) then
+        raise Exception.CreateFmt(SCouldNotClosePipe, ['error']);
     end;
-
-
-    // Run LSP server
-    SetCurrentDir(FDir);
-    if not CreateProcess(nil, PChar(ACommandline), nil, nil, True, NORMAL_PRIORITY_CLASS or CREATE_NO_WINDOW, nil, PChar(FDir), SI, FProcessInformation) then
-    begin
-      raise Exception.Create('Could not run language server!');
-    end;
-
-    if not CloseHandle(outputwrite) then
-      raise Exception.Create('Could not create pipe!');
-    if not CloseHandle(inputRead) then
-      raise Exception.Create('Could not create pipe!');
-    if not CloseHandle(errorwrite) then
-      raise Exception.Create('Could not create pipe!');
     sleep(500);
     try
       FInputRaw := '';
@@ -310,7 +337,7 @@ begin
         begin
           // Make sure we don't jump out of this loop if an exception occur.
           try
-            ExtractAndSendResponceMessages(FInputRaw);
+            ExtractAndSendResponseMessages(FInputRaw);
           except
             on E: Exception do
             begin
@@ -401,7 +428,7 @@ begin
   if s <> '' then
   begin
     try
-      ExtractAndSendResponceMessages(s);
+      ExtractAndSendResponseMessages(s);
     except
       on E: Exception do
       begin
@@ -517,4 +544,10 @@ begin
     FOnReadFromServer(Self, FJson, FPlainText);
 end;
 
+procedure TLSPExecuteServerThread.SetArguments(const AArguments: string);
+begin
+  if not AArguments.StartsWith(' ') then
+    FArguments := ' ' + AArguments else
+    FArguments := AArguments;
+end;
 end.

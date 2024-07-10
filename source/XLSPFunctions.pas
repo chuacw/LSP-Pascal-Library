@@ -14,7 +14,7 @@
  * Embarcadero Technologies, Inc is not permitted to use or redistribute
  * this source code without explicit permission.
  *
- * Copyright © 2023 Rickard Johansson. All rights reserved.
+ * Copyright ï¿½ 2023 Rickard Johansson. All rights reserved.
  *
 *)
 
@@ -22,7 +22,7 @@ unit XLSPFunctions;
 
 interface
 
-uses XLSPTypes, generics.collections, XSuperJSON, XSuperObject;
+uses XLSPTypes, System.Generics.Collections, XSuperJSON, XSuperObject;
 
 function CreateJSONRequestParam(const lspKind: TLSPKind; lspMsg: TLSPMessage): string;
 function CreateJSONRequest(const lspKind: TLSPKind; lspMsg: TLSPMessage; const method: string = ''; const paramJSON:
