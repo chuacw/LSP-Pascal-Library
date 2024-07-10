@@ -80,9 +80,13 @@ begin
 end;
 
 destructor TLSPExecuteServerThread.Destroy;
+var
+  LTerminated: Boolean;
 begin
-  if Terminated then TerminateProcess(FProcessInformation.hProcess,4);
+  LTerminated := Terminated;
   inherited;
+  if LTerminated then
+    TerminateProcess(FProcessInformation.hProcess,4);
 end;
 
 
