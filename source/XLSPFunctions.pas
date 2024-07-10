@@ -28,8 +28,8 @@ function CreateJSONRequestParam(const lspKind: TLSPKind; lspMsg: TLSPMessage): s
 function CreateJSONRequest(const lspKind: TLSPKind; lspMsg: TLSPMessage; const method: string = ''; const paramJSON:
     string = ''): string;
 function CreateJSONResponse(const lspKind: TLSPKind; lspMsg: TLSPMessage; const method: string = ''; resultType:
-    TLSPResultType = lsprObject; resultString: string = ''): string;
-function GetKindFromMethod(s: string; const id: Integer = -1): Integer;
+    TLSPResultType = lsprObject; const resultString: string = ''): string;
+function GetKindFromMethod(const s: string; const id: Integer = -1): Integer;
 function GetMethodFromKind(const lspId: TLSPKind): string;
 function IsRequest(const lspId: TLSPKind): Boolean;
 function JsonCallHierarchyIncommingResponseToObject(const LJson: ISuperObject; var ErrorCode: Integer; var ErrorMessage: string;
@@ -7181,7 +7181,7 @@ begin
 end;
 
 function CreateJSONResponse(const lspKind: TLSPKind; lspMsg: TLSPMessage; const method: string = ''; resultType:
-    TLSPResultType = lsprObject; resultString: string = ''): string;
+    TLSPResultType = lsprObject; const resultString: string = ''): string;
 var
   nId: Integer;
   s: string;
@@ -7231,7 +7231,7 @@ begin
   Result := s + '}';
 end;
 
-function GetKindFromMethod(s: string; const id: Integer = -1): Integer;
+function GetKindFromMethod(const s: string; const id: Integer = -1): Integer;
 begin
   Result := IndexStr(s, LSPIdStrings);
   if Result < 0 then Result := id;
