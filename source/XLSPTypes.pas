@@ -1,21 +1,21 @@
 ﻿(*
- *                       Pascal LSP Client
- *
- * Usage allowed under the restrictions of the Lesser GNU General Public License
- * or alternatively the restrictions of the Mozilla Public License 1.1
- *
- * Software distributed under the License is distributed on an "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied.
- *
- * Unit owner : Rickard Johansson <support@rj-texted.se>
- * Web site   : https://www.rj-texted.se
- * Github     : https://github.com/rickard67/LSP-Pascal-Library
- *
- * Embarcadero Technologies, Inc is not permitted to use or redistribute
- * this source code without explicit permission.
- *
- * Copyright © 2023 Rickard Johansson. All rights reserved.
- *
+  *                       Pascal LSP Client
+  *
+  * Usage allowed under the restrictions of the Lesser GNU General Public License
+  * or alternatively the restrictions of the Mozilla Public License 1.1
+  *
+  * Software distributed under the License is distributed on an "AS IS" basis,
+  * WITHOUT WARRANTY OF ANY KIND, either express or implied.
+  *
+  * Unit owner : Rickard Johansson <support@rj-texted.se>
+  * Web site   : https://www.rj-texted.se
+  * Github     : https://github.com/rickard67/LSP-Pascal-Library
+  *
+  * Embarcadero Technologies, Inc is not permitted to use or redistribute
+  * this source code without explicit permission.
+  *
+  * Copyright © 2023 Rickard Johansson. All rights reserved.
+  *
 *)
 
 unit XLSPTypes;
@@ -32,11 +32,11 @@ type
   // back. They work like events.
   //
   // NotificationMessage = record
-  //   // The method to be invoked.
-  //   method: string;
+  // // The method to be invoked.
+  // method: string;
   //
-  //   // The notification's params.
-  //   params?: array | object;
+  // // The notification's params.
+  // params?: array | object;
   // end;
   //
   // $ Notifications and Requests
@@ -67,23 +67,27 @@ type
 
   TLSPTextDocumentSyncKindRec = record
     // Documents should not be synced at all.
-    const None = 0;
+  const
+    None = 0;
 
     // Documents are synced by always sending the full content
     // of the document.
-    const Full = 1;
+  const
+    Full = 1;
 
     // Documents are synced by sending the full content on open.
     // After that only incremental updates to the document are
     // send.
-    const Incremental = 2;
+  const
+    Incremental = 2;
   end;
+
   TLSPTextDocumentSyncKind = Integer;
 
   TLSPWorkDoneProgressParams = class(TLSPBaseParams)
   public
-     // An optional token that a server can use to report work done progress.
-     workDoneToken: TLSPProgressToken;
+    // An optional token that a server can use to report work done progress.
+    workDoneToken: TLSPProgressToken;
   end;
 
   TLSPWorkDoneProgressCreateParams = class(TLSPBaseParams)
@@ -138,7 +142,7 @@ type
 
   TLSPWorkDoneProgressOptions = class
   public
-	  workDoneProgress: boolean;
+    workDoneProgress: boolean;
   end;
 
   TLSPWorkDoneProgressCancelParams = class(TLSPBaseParams)
@@ -189,10 +193,10 @@ type
     kind: string;
 
     // Controls enablement state of a cancel button. This property is only valid
-	  // if a cancel button got requested in the `WorkDoneProgressStart` payload.
+    // if a cancel button got requested in the `WorkDoneProgressStart` payload.
     //
-	  // Clients that don't support cancellation or don't support control the
-	  // button's enablement state are allowed to ignore the setting.
+    // Clients that don't support cancellation or don't support control the
+    // button's enablement state are allowed to ignore the setting.
     cancellable: boolean;
 
     // Optional, more detailed associated progress message. Contains
@@ -212,7 +216,7 @@ type
     percentage: Cardinal;
   end;
 
-  WorkDoneProgressEnd  = class(TLSPBaseParams)
+  WorkDoneProgressEnd = class(TLSPBaseParams)
   protected
     constructor Create;
   public
@@ -243,13 +247,13 @@ type
     verbose: string;
   end;
 
-  TLSPMessageType = (lspMsgError=1,lspMsgWarning,lspMsgInfo,lspMsgLog);
+  TLSPMessageType = (lspMsgError = 1, lspMsgWarning, lspMsgInfo, lspMsgLog);
 
   TLSPShowMessageParams = class(TLSPBaseParams)
   public
     // The message type.
     //
-	  // const Error = 1;
+    // const Error = 1;
     // const Warning = 2;
     // const Info = 3;
     // const Log = 4;
@@ -263,11 +267,8 @@ type
 
   TLSPErrorCodes = (
     // Defined by JSON-RPC
-    ParseError = -32700,
-    InvalidRequest = -32600,
-    MethodNotFound = -32601,
-    InvalidParams = -32602,
-    InternalError = -32603,
+    ParseError = -32700, InvalidRequest = -32600, MethodNotFound = -32601,
+    InvalidParams = -32602, InternalError = -32603,
 
     // This is the start range of JSON-RPC reserved error codes.
     // It doesn't denote a real error code. No LSP error codes should
@@ -283,8 +284,7 @@ type
 
     // Error code indicating that a server received a notification or
     // request before the server has received the `initialize` request.
-    ServerNotInitialized = -32002,
-    UnknownErrorCode = -32001,
+    ServerNotInitialized = -32002, UnknownErrorCode = -32001,
 
     // This is the end range of JSON-RPC reserved error codes.
     // It doesn't denote a real error code.
@@ -339,13 +339,12 @@ type
     //
     // @since 3.16.0
     //
-    lspReservedErrorRangeEnd = -32800
-  );
+    lspReservedErrorRangeEnd = -32800);
 
   TLSPResponseError = class(TLSPBaseParams)
   public
     // A number indicating the error type that occurred.
-    code: integer;
+    code: Integer;
 
     // A string providing a short description of the error.
     [ALIAS('message')]
@@ -380,7 +379,7 @@ type
   // A range is comparable to a selection in an editor.
   TLSPRange = record
     // The range's start position.
-    [ALIAS('start')]
+  [ALIAS('start')]
     startPos: TLSPPosition;
 
     // The range's end position.
@@ -454,16 +453,16 @@ type
 
   // DiagnosticTag = 1 | 2
   TLSPDiagnosticTag = Integer;
-    // Unused or unnecessary code.
-    //
-    // Clients are allowed to render diagnostics with this tag faded out
-    // instead of having an error squiggle.
-    // const Unnecessary = 1;
+  // Unused or unnecessary code.
+  //
+  // Clients are allowed to render diagnostics with this tag faded out
+  // instead of having an error squiggle.
+  // const Unnecessary = 1;
 
-    // Deprecated or obsolete code.
-    //
-    // Clients are allowed to rendered diagnostics with this tag strike through.
-    // Deprecated = 2;
+  // Deprecated or obsolete code.
+  //
+  // Clients are allowed to rendered diagnostics with this tag strike through.
+  // Deprecated = 2;
 
   TLSPDiagnostic = record
     // The range at which the message applies.
@@ -540,12 +539,12 @@ type
     // - `?` to match on one character in a path segment
     // - `**` to match any number of path segments, including none
     // - `{}` to group conditions
-    //   (e.g. `**​/*.{ts,js}` matches all TypeScript and JavaScript files)
+    // (e.g. `**​/*.{ts,js}` matches all TypeScript and JavaScript files)
     // - `[]` to declare a range of characters to match in a path segment
-    //   (e.g., `example.[0-9]` to match on `example.0`, `example.1`, …)
+    // (e.g., `example.[0-9]` to match on `example.0`, `example.1`, …)
     // - `[!...]` to negate a range of characters to match in a path segment
-    //   (e.g., `example.[!0-9]` to match on `example.a`, `example.b`,
-    //    but not `example.0`)
+    // (e.g., `example.[!0-9]` to match on `example.a`, `example.b`,
+    // but not `example.0`)
     pattern: string;
   end;
 
@@ -554,68 +553,77 @@ type
 
   TLSPCodeActionKinds = record
   public
-   //Empty kind.
-   const Empty = '';
+  // Empty kind.
+    const
+    Empty = '';
 
-   // Base kind for quickfix actions: 'quickfix'.
-   const QuickFix = 'quickfix';
+    // Base kind for quickfix actions: 'quickfix'.
+  const
+    QuickFix = 'quickfix';
 
-   // Base kind for refactoring actions: 'refactor'.
-   const Refactor = 'refactor';
+    // Base kind for refactoring actions: 'refactor'.
+  const
+    Refactor = 'refactor';
 
-   // Base kind for refactoring extraction actions: 'refactor.extract'.
-   //
-   // Example extract actions:
-   //
-   // - Extract method
-   // - Extract function
-   // - Extract variable
-   // - Extract interface from class
-   // - ...
-   //
-   const RefactorExtract = 'refactor.extract';
+    // Base kind for refactoring extraction actions: 'refactor.extract'.
+    //
+    // Example extract actions:
+    //
+    // - Extract method
+    // - Extract function
+    // - Extract variable
+    // - Extract interface from class
+    // - ...
+    //
+  const
+    RefactorExtract = 'refactor.extract';
 
-   // Base kind for refactoring inline actions: 'refactor.inline'.
-   //
-   // Example inline actions:
-   //
-   // - Inline function
-   // - Inline variable
-   // - Inline constant
-   // - ...
-   //
-   const RefactorInline = 'refactor.inline';
+    // Base kind for refactoring inline actions: 'refactor.inline'.
+    //
+    // Example inline actions:
+    //
+    // - Inline function
+    // - Inline variable
+    // - Inline constant
+    // - ...
+    //
+  const
+    RefactorInline = 'refactor.inline';
 
-   // Base kind for refactoring rewrite actions: 'refactor.rewrite'.
-   //
-   // Example rewrite actions:
-   //
-   // - Convert JavaScript function to class
-   // - Add or remove parameter
-   // - Encapsulate field
-   // - Make method static
-   // - Move method to base class
-   // - ...
-   //
-   const RefactorRewrite = 'refactor.rewrite';
+    // Base kind for refactoring rewrite actions: 'refactor.rewrite'.
+    //
+    // Example rewrite actions:
+    //
+    // - Convert JavaScript function to class
+    // - Add or remove parameter
+    // - Encapsulate field
+    // - Make method static
+    // - Move method to base class
+    // - ...
+    //
+  const
+    RefactorRewrite = 'refactor.rewrite';
 
-   // Base kind for source actions: `source`.
-   //
-   // Source code actions apply to the entire file.
-   const Source = 'source';
+    // Base kind for source actions: `source`.
+    //
+    // Source code actions apply to the entire file.
+  const
+    source = 'source';
 
-   // Base kind for an organize imports source action `source.organizeImports`.
-   const SourceOrganizeImports = 'source.organizeImports';
+    // Base kind for an organize imports source action `source.organizeImports`.
+  const
+    SourceOrganizeImports = 'source.organizeImports';
 
-   // Base kind for a 'fix all' source action: `source.fixAll`.
-   //
-	 // 'Fix all' actions automatically fix errors that have a clear fix that
-	 // do not require user input. They should not suppress errors or perform
-	 // unsafe fixes such as generating new types or classes.
-	 //
-	 // @since 3.17.0
-   //
-	 const SourceFixAll = 'source.fixAll';
+    // Base kind for a 'fix all' source action: `source.fixAll`.
+    //
+    // 'Fix all' actions automatically fix errors that have a clear fix that
+    // do not require user input. They should not suppress errors or perform
+    // unsafe fixes such as generating new types or classes.
+    //
+    // @since 3.17.0
+    //
+  const
+    SourceFixAll = 'source.fixAll';
   end;
 
   TLSPCodeActionKindValues = class
@@ -644,14 +652,17 @@ type
 
   TLSPWatchKind = record
   public
-    // Interested in create events.
-    const Create = 1;
+  // Interested in create events.
+    const
+    Create = 1;
 
     // Interested in change events
-    const Change = 2;
+  const
+    Change = 2;
 
     // Interested in delete events
-    const Delete = 4;
+  const
+    Delete = 4;
   end;
 
   TLSPSemanticTokensLegend = class
@@ -709,20 +720,23 @@ type
   end;
 
   // Describe options to be used when registering for text document change events.
-  TLSPTextDocumentChangeRegistrationOptions = class(TLSPTextDocumentRegistrationOptions)
+  TLSPTextDocumentChangeRegistrationOptions = class
+    (TLSPTextDocumentRegistrationOptions)
   public
     // How documents are synced to the server. See TextDocumentSyncKind.Full
     // and TextDocumentSyncKind.Incremental.
     syncKind: TLSPTextDocumentSyncKind;
   end;
 
-  TLSPTextDocumentSaveRegistrationOptions = class(TLSPTextDocumentRegistrationOptions)
+  TLSPTextDocumentSaveRegistrationOptions = class
+    (TLSPTextDocumentRegistrationOptions)
   public
     // The client is supposed to include the content on save.
-	  includeText: boolean;
+    includeText: boolean;
   end;
 
-  TLSPDeclarationRegistrationOptions = class(TLSPTextDocumentRegistrationOptions)
+  TLSPDeclarationRegistrationOptions = class
+    (TLSPTextDocumentRegistrationOptions)
   public
   end;
 
@@ -730,11 +744,13 @@ type
   public
   end;
 
-  TLSPTypeDefinitionRegistrationOptions = class(TLSPTextDocumentRegistrationOptions)
+  TLSPTypeDefinitionRegistrationOptions = class
+    (TLSPTextDocumentRegistrationOptions)
   public
   end;
 
-  TLSPImplementationRegistrationOptions = class(TLSPTextDocumentRegistrationOptions)
+  TLSPImplementationRegistrationOptions = class
+    (TLSPTextDocumentRegistrationOptions)
   public
   end;
 
@@ -742,19 +758,23 @@ type
   public
   end;
 
-  TLSPCallHierarchyRegistrationOptions = class(TLSPTextDocumentRegistrationOptions)
+  TLSPCallHierarchyRegistrationOptions = class
+    (TLSPTextDocumentRegistrationOptions)
   public
   end;
 
-  TLSPTypeHierarchyRegistrationOptions = class(TLSPTextDocumentRegistrationOptions)
+  TLSPTypeHierarchyRegistrationOptions = class
+    (TLSPTextDocumentRegistrationOptions)
   public
   end;
 
-  TLSPDocumentHighlightRegistrationOptions = class(TLSPTextDocumentRegistrationOptions)
+  TLSPDocumentHighlightRegistrationOptions = class
+    (TLSPTextDocumentRegistrationOptions)
   public
   end;
 
-  TLSPDocumentLinkRegistrationOptions = class(TLSPTextDocumentRegistrationOptions)
+  TLSPDocumentLinkRegistrationOptions = class
+    (TLSPTextDocumentRegistrationOptions)
   public
     // Document links have a resolve provider as well.
     resolveProvider: boolean;
@@ -770,15 +790,18 @@ type
     resolveProvider: boolean;
   end;
 
-  TLSPFoldingRangeRegistrationOptions = class(TLSPTextDocumentRegistrationOptions)
+  TLSPFoldingRangeRegistrationOptions = class
+    (TLSPTextDocumentRegistrationOptions)
   public
   end;
 
-  TLSPSelectionRangeRegistrationOptions = class(TLSPTextDocumentRegistrationOptions)
+  TLSPSelectionRangeRegistrationOptions = class
+    (TLSPTextDocumentRegistrationOptions)
   public
   end;
 
-  TLSPDocumentSymbolRegistrationOptions = class(TLSPTextDocumentRegistrationOptions)
+  TLSPDocumentSymbolRegistrationOptions = class
+    (TLSPTextDocumentRegistrationOptions)
   public
     // A human-readable string that is shown when multiple outlines trees
     // are shown for the same document.
@@ -786,7 +809,8 @@ type
     slabel: string;
   end;
 
-  TLSPSemanticTokensRegistrationOptions = class(TLSPTextDocumentRegistrationOptions)
+  TLSPSemanticTokensRegistrationOptions = class
+    (TLSPTextDocumentRegistrationOptions)
   public
     // The legend used by the server
     legend: TLSPSemanticTokensLegend;
@@ -796,36 +820,37 @@ type
     range: boolean;
 
     // Server supports providing semantic tokens for a full document.
-    full: boolean;
+    Full: boolean;
 
     // The server supports deltas for full documents.
     // full: {
-    //   delta: boolean;
+    // delta: boolean;
     // }
     delta: boolean;
     destructor Destroy; override;
   end;
 
-  TLSPInlineValueRegistrationOptions = class(TLSPTextDocumentRegistrationOptions)
+  TLSPInlineValueRegistrationOptions = class
+    (TLSPTextDocumentRegistrationOptions)
   public
   end;
 
   TLSPInlayHintRegistrationOptions = class(TLSPTextDocumentRegistrationOptions)
   public
     // The server provides support to resolve additional
-	  // information for an inlay hint item.
+    // information for an inlay hint item.
     resolveProvider: boolean;
   end;
 
   TLSPCompletionOptionItem = record
-		// The server has support for completion item label
-		// details (see also `CompletionItemLabelDetails`) when receiving
-		// a completion item in a resolve call.
+    // The server has support for completion item label
+    // details (see also `CompletionItemLabelDetails`) when receiving
+    // a completion item in a resolve call.
     //
-		// @since 3.17.0
+    // @since 3.17.0
     //
-		labelDetailsSupport: boolean;
-	end;
+    labelDetailsSupport: boolean;
+  end;
 
   TLSPCompletionRegistrationOptions = class(TLSPTextDocumentRegistrationOptions)
   public
@@ -885,7 +910,8 @@ type
     workspaceDiagnostics: boolean;
   end;
 
-  TLSPSignatureHelpRegistrationOptions = class(TLSPTextDocumentRegistrationOptions)
+  TLSPSignatureHelpRegistrationOptions = class
+    (TLSPTextDocumentRegistrationOptions)
   public
     // The characters that trigger signature help
     // automatically.
@@ -920,19 +946,23 @@ type
     destructor Destroy; override;
   end;
 
-  TLSPDocumentColorRegistrationOptions = class(TLSPTextDocumentRegistrationOptions)
+  TLSPDocumentColorRegistrationOptions = class
+    (TLSPTextDocumentRegistrationOptions)
   public
   end;
 
-  TLSPDocumentFormattingRegistrationOptions = class(TLSPTextDocumentRegistrationOptions)
+  TLSPDocumentFormattingRegistrationOptions = class
+    (TLSPTextDocumentRegistrationOptions)
   public
   end;
 
-  TLSPDocumentRangeFormattingRegistrationOptions = class(TLSPTextDocumentRegistrationOptions)
+  TLSPDocumentRangeFormattingRegistrationOptions = class
+    (TLSPTextDocumentRegistrationOptions)
   public
   end;
 
-  TLSPDocumentOnTypeFormattingRegistrationOptions = class(TLSPTextDocumentRegistrationOptions)
+  TLSPDocumentOnTypeFormattingRegistrationOptions = class
+    (TLSPTextDocumentRegistrationOptions)
   public
     // A character on which formatting should be triggered, like `{`.
     firstTriggerCharacter: string;
@@ -948,21 +978,24 @@ type
     prepareProvider: boolean;
   end;
 
-  TLSPLinkedEditingRangeRegistrationOptions = class(TLSPTextDocumentRegistrationOptions)
+  TLSPLinkedEditingRangeRegistrationOptions = class
+    (TLSPTextDocumentRegistrationOptions)
   public
   end;
 
-  TLSPDidChangeWatchedFilesRegistrationOptions = class(TLSPTextDocumentRegistrationOptions)
+  TLSPDidChangeWatchedFilesRegistrationOptions = class
+    (TLSPTextDocumentRegistrationOptions)
   public
     // The watchers to register.
     watchers: TArray<TLSPFileSystemWatcher>;
     destructor Destroy; override;
   end;
 
-  TLSPExecuteCommandRegistrationOptions = class(TLSPTextDocumentRegistrationOptions)
+  TLSPExecuteCommandRegistrationOptions = class
+    (TLSPTextDocumentRegistrationOptions)
   public
     // The commands to be executed on the server
-	  commands: TArray<string>;
+    commands: TArray<string>;
     destructor Destroy; override;
   end;
 
@@ -984,11 +1017,11 @@ type
     range: boolean;
 
     // Server supports providing semantic tokens for a full document.
-    full: boolean;
+    Full: boolean;
 
     // The server supports deltas for full documents.
     // full: {
-    //   delta: boolean;
+    // delta: boolean;
     // }
     delta: boolean;
     destructor Destroy; override;
@@ -1120,12 +1153,12 @@ type
 
   TLSPTypeDefinitionOptions = class(TLSPWorkDoneProgressOptions)
   public
-    supported: Boolean;
+    supported: boolean;
   end;
 
   TLSPImplementationOptions = class(TLSPWorkDoneProgressOptions)
   public
-    supported: Boolean;
+    supported: boolean;
   end;
 
   TLSPReferenceOptions = class(TLSPWorkDoneProgressOptions)
@@ -1178,7 +1211,7 @@ type
   end;
 
   TLSPFoldingRangeOptions = class(TLSPWorkDoneProgressOptions)
- end;
+  end;
 
   TLSPSelectionRangeOptions = class(TLSPWorkDoneProgressOptions)
   end;
@@ -1246,7 +1279,7 @@ type
   TLSPDocumentFormattingOptions = class(TLSPWorkDoneProgressOptions)
   end;
 
-  TLSPDocumentRangeFormattingOptions =class(TLSPWorkDoneProgressOptions)
+  TLSPDocumentRangeFormattingOptions = class(TLSPWorkDoneProgressOptions)
   end;
 
   TLSPDocumentOnTypeFormattingOptions = class
@@ -1289,10 +1322,11 @@ type
   end;
 
   // A symbol kind.
-  TLSPSymbolKind = (symFile=1,symModule,symNamespace,symPackage,symClass,symMethod,symProperty,symField,
-                    symConstructor,symEnum,symInterface,symFunction,symVariable,symConstant,symString,
-                    symNumber,symBoolean,symArray,symObject,symKey,symNull,symEnumMember,symStruct,
-                    symEvent,symOperator,symTypeParameter);
+  TLSPSymbolKind = (symFile = 1, symModule, symNamespace, symPackage, symClass,
+    symMethod, symProperty, symField, symConstructor, symEnum, symInterface,
+    symFunction, symVariable, symConstant, symString, symNumber, symBoolean,
+    symArray, symObject, symKey, symNull, symEnumMember, symStruct, symEvent,
+    symOperator, symTypeParameter);
 
   // 'create' = Supports creating new files and folders.
   // 'rename' = Supports renaming existing files and folders.
@@ -1349,7 +1383,7 @@ type
     // @since 3.17.0
     //
     // Whether a server is allowed to return a location without a range depends on the client
-	  // capability `workspace.symbol.resolveSupport`.
+    // capability `workspace.symbol.resolveSupport`.
     location: TLSPLocation;
 
     // The name of the symbol containing this symbol. This information is for
@@ -1362,6 +1396,7 @@ type
     // workspace symbol request and a workspace symbol resolve request.
     data: Variant; // data?: LSPAny;
   end;
+
   TLSPSymbolInformations = TArray<TLSPSymbolInformation>;
 
   // Applying the workspace change is simply aborted if one of the changes
@@ -1479,9 +1514,9 @@ type
     symbolKind: TLSPSymbolKindValues;
 
     // The client supports tags on `SymbolInformation`.
-	  // Clients supporting tags have to handle unknown tags gracefully.
+    // Clients supporting tags have to handle unknown tags gracefully.
     //
-	  // @since 3.16.0
+    // @since 3.16.0
     //
     tagSupport: TLSPTagSupport;
 
@@ -1545,7 +1580,7 @@ type
   TLSPChangeAnnotation = record
     // A human-readable string describing the actual change. The string
     // is rendered prominent in the user interface.
-    [ALIAS('label')]
+  [ALIAS('label')]
     slabel: string;
 
     // A flag which indicates that user confirmation is needed
@@ -1562,8 +1597,7 @@ type
     values: TArray<TLSPTextEdit>;
   end;
 
-  TLSPEditChangeAnnotations = record
-    [DISABLE]
+  TLSPEditChangeAnnotations = record [DISABLE]
     id: string;
     [DISABLE]
     values: TLSPChangeAnnotation;
@@ -1608,7 +1642,7 @@ type
     destructor Destroy; override;
     (*
       {
-        [id: string /* ChangeAnnotationIdentifier */]: ChangeAnnotation;
+      [id: string /* ChangeAnnotationIdentifier */]: ChangeAnnotation;
       }
     *)
   end;
@@ -1621,12 +1655,12 @@ type
 
   TLSPClientInfo = class
   public
-		// The name of the client as defined by the client.
+    // The name of the client as defined by the client.
     name: string;
 
-		// The client's version as defined by the client.
+    // The client's version as defined by the client.
     version: string;
-	end;
+  end;
 
   TLSPServerInfo = class
   public
@@ -1643,7 +1677,7 @@ type
     // property exists the client also guarantees that it will
     // handle values outside its set gracefully and falls back
     // to a default value when unknown.
-    valueSet: TArray<string>;  // FoldingRangeKind[];
+    valueSet: TArray<string>; // FoldingRangeKind[];
 
     // 'comment'. Folding range for a comment
     // 'imports'. Folding range for imports or includes
@@ -1725,7 +1759,7 @@ type
 
   TLSPFileOperationPatternOptions = record
     // The pattern should be matched ignoring casing.
-	  ignoreCase: boolean;
+    ignoreCase: boolean;
   end;
 
   TLSPFileOperationPattern = record
@@ -1734,12 +1768,12 @@ type
     // - `?` to match on one character in a path segment
     // - `**` to match any number of path segments, including none
     // - `{}` to group conditions (e.g. `**​/*.{ts,js}` matches all TypeScript
-    //   and JavaScript files)
+    // and JavaScript files)
     // - `[]` to declare a range of characters to match in a path segment
-    //   (e.g., `example.[0-9]` to match on `example.0`, `example.1`, …)
+    // (e.g., `example.[0-9]` to match on `example.0`, `example.1`, …)
     // - `[!...]` to negate a range of characters to match in a path segment
-    //   (e.g., `example.[!0-9]` to match on `example.a`, `example.b`, but
-    //   not `example.0`)
+    // (e.g., `example.[!0-9]` to match on `example.a`, `example.b`, but
+    // not `example.0`)
     glob: string;
 
     // Whether to match files or folders with this pattern.
@@ -1831,80 +1865,80 @@ type
 
   TLSPWorkspace = class
   public
-		// The client supports applying batch edits
-		// to the workspace by supporting the request
-		// 'workspace/applyEdit'
+    // The client supports applying batch edits
+    // to the workspace by supporting the request
+    // 'workspace/applyEdit'
     applyEdit: boolean;
 
-		// Capabilities specific to `WorkspaceEdit`s
+    // Capabilities specific to `WorkspaceEdit`s
     workspaceEdit: TLSPWorkspaceEditClientCapabilities;
 
-		// Capabilities specific to the `workspace/didChangeConfiguration`
-		// notification.
+    // Capabilities specific to the `workspace/didChangeConfiguration`
+    // notification.
     didChangeConfiguration: TLSPDidChangeConfigurationClientCapabilities;
 
-		// Capabilities specific to the `workspace/didChangeWatchedFiles`
-		// notification.
+    // Capabilities specific to the `workspace/didChangeWatchedFiles`
+    // notification.
     didChangeWatchedFiles: TLSPDidChangeWatchedFilesClientCapabilities;
 
-		// Capabilities specific to the `workspace/symbol` request.
-		symbol: TLSPWorkspaceSymbolClientCapabilities;
+    // Capabilities specific to the `workspace/symbol` request.
+    symbol: TLSPWorkspaceSymbolClientCapabilities;
 
-		// Capabilities specific to the `workspace/executeCommand` request.
+    // Capabilities specific to the `workspace/executeCommand` request.
     executeCommand: TLSPExecuteCommandClientCapabilities;
 
-		// The client has support for workspace folders.
-		//
-		// Since 3.6.0
+    // The client has support for workspace folders.
+    //
+    // Since 3.6.0
     workspaceFolders: boolean;
 
-		// The client supports `workspace/configuration` requests.
-		//
-		// Since 3.6.0
+    // The client supports `workspace/configuration` requests.
     //
-		configuration: boolean;
+    // Since 3.6.0
+    //
+    configuration: boolean;
 
     // Capabilities specific to the semantic token requests scoped to the
-		// workspace.
+    // workspace.
     //
-		// @since 3.16.0
+    // @since 3.16.0
     //
     semanticTokens: TLSPSemanticTokensWorkspaceClientCapabilities;
 
-		// Capabilities specific to the code lens requests scoped to the
-		// workspace.
+    // Capabilities specific to the code lens requests scoped to the
+    // workspace.
     //
-		// @since 3.16.0
+    // @since 3.16.0
     //
-		codeLens: TLSPCodeLensWorkspaceClientCapabilities;
+    codeLens: TLSPCodeLensWorkspaceClientCapabilities;
 
-		// The client has support for file requests/notifications.
+    // The client has support for file requests/notifications.
     //
-		// @since 3.16.0
+    // @since 3.16.0
     //
-		fileOperations: TLSPFileOperations;
+    fileOperations: TLSPFileOperations;
 
     // Client workspace capabilities specific to inline values.
     //
-		// @since 3.17.0
+    // @since 3.17.0
     //
-		inlineValue: TLSPInlineValueWorkspaceClientCapabilities;
+    inlineValue: TLSPInlineValueWorkspaceClientCapabilities;
 
-		// Client workspace capabilities specific to inlay hints.
+    // Client workspace capabilities specific to inlay hints.
     //
-		// @since 3.17.0
+    // @since 3.17.0
     //
-		inlayHint: TLSPInlayHintWorkspaceClientCapabilities;
+    inlayHint: TLSPInlayHintWorkspaceClientCapabilities;
 
-		// Client workspace capabilities specific to diagnostics.
+    // Client workspace capabilities specific to diagnostics.
     //
-		// @since 3.17.0.
+    // @since 3.17.0.
     //
-		diagnostics: TLSPDiagnosticWorkspaceClientCapabilities;
+    diagnostics: TLSPDiagnosticWorkspaceClientCapabilities;
   public
     constructor Create;
     destructor Destroy; override;
-	end;
+  end;
 
   TLSPWorkspaceFoldersServerCapabilities = record
   public
@@ -1931,9 +1965,9 @@ type
 
     // The server is interested in file notifications/requests.
     //
-		// @since 3.16.0
+    // @since 3.16.0
     //
-		fileOperations: TLSPServerCapabilitiesFileOperations;
+    fileOperations: TLSPServerCapabilitiesFileOperations;
   end;
 
   TLSPShowDocumentClientCapabilities = class
@@ -1954,13 +1988,13 @@ type
 
     // Capabilities specific to the showMessage request
     //
-		// @since 3.16.0
+    // @since 3.16.0
     //
     showMessage: TLSPShowMessageRequestClientCapabilities;
 
-		// Client capabilities for the show document request.
+    // Client capabilities for the show document request.
     //
-		// @since 3.16.0
+    // @since 3.16.0
     //
     showDocument: TLSPShowDocumentClientCapabilities;
     destructor Destroy; override;
@@ -1995,7 +2029,8 @@ type
     // inserted using the indentation defined in the string value.
     // The client will not apply any kind of adjustments to the
     // string.
-    const asIs = 1;
+  const
+    asIs = 1;
 
     // The editor adjusts leading whitespace of new lines so that
     // they match the indentation up to the cursor of the line for
@@ -2004,13 +2039,15 @@ type
     // Consider a line like this: <2tabs><cursor><3tabs>foo. Accepting a
     // multi line completion item is indented using 2 tabs and all
     // following lines inserted will be indented using 2 tabs as well.
-    const adjustIndentation = 2;
+  const
+    adjustIndentation = 2;
   end;
+
   TLSPInsertTextMode = Cardinal;
 
   TLSPInsertTextModeSupport = class
-		valueSet: TArray<TLSPInsertTextMode>;
-	end;
+    valueSet: TArray<TLSPInsertTextMode>;
+  end;
 
   TLSPClientCompletionItem = class
   public
@@ -2045,34 +2082,34 @@ type
     tagSupport: TLSPTagSupport;
 
     // Client supports insert replace edit to control different behavior if
-		// a completion item is inserted in the text or should replace text.
+    // a completion item is inserted in the text or should replace text.
     //
-		// @since 3.16.0
+    // @since 3.16.0
     //
-		insertReplaceSupport: boolean;
+    insertReplaceSupport: boolean;
 
-		// Indicates which properties a client can resolve lazily on a
-		// completion item. Before version 3.16.0 only the predefined properties
-		// `documentation` and `details` could be resolved lazily.
+    // Indicates which properties a client can resolve lazily on a
+    // completion item. Before version 3.16.0 only the predefined properties
+    // `documentation` and `details` could be resolved lazily.
     //
-		// @since 3.16.0
+    // @since 3.16.0
     //
-		resolveSupport: TLSPResolveSupport;
+    resolveSupport: TLSPResolveSupport;
 
-		// The client supports the `insertTextMode` property on
-		// a completion item to override the whitespace handling mode
-		// as defined by the client (see `insertTextMode`).
+    // The client supports the `insertTextMode` property on
+    // a completion item to override the whitespace handling mode
+    // as defined by the client (see `insertTextMode`).
     //
-		// @since 3.16.0
+    // @since 3.16.0
     //
-		insertTextModeSupport: TLSPInsertTextModeSupport;
+    insertTextModeSupport: TLSPInsertTextModeSupport;
 
     // The client has support for completion item label
-		// details (see also `CompletionItemLabelDetails`).
+    // details (see also `CompletionItemLabelDetails`).
     //
-		// @since 3.17.0
+    // @since 3.17.0
     //
-		labelDetailsSupport: boolean;
+    labelDetailsSupport: boolean;
   public
     constructor Create;
     destructor Destroy; override;
@@ -2095,31 +2132,80 @@ type
 
   // The kind of a completion entry.
   TLSPCompletionItemKind = record
-    const cText = 1;
-    const cMethod = 2;
-    const cFunction = 3;
-    const cConstructor = 4;
-    const cField = 5;
-    const cVariable = 6;
-    const cClass = 7;
-    const cInterface = 8;
-    const cModule = 9;
-    const cProperty = 10;
-    const cUnit = 11;
-    const cValue = 12;
-    const cEnum = 13;
-    const cKeyword = 14;
-    const cSnippet = 15;
-    const cColor = 16;
-    const cFile = 17;
-    const cReference = 18;
-    const cFolder = 19;
-    const cEnumMember = 20;
-    const cConstant = 21;
-    const cStruct = 22;
-    const cEvent = 23;
-    const cOperator = 24;
-    const cTypeParameter = 25;
+  const
+    cText = 1;
+
+  const
+    cMethod = 2;
+
+  const
+    cFunction = 3;
+
+  const
+    cConstructor = 4;
+
+  const
+    cField = 5;
+
+  const
+    cVariable = 6;
+
+  const
+    cClass = 7;
+
+  const
+    cInterface = 8;
+
+  const
+    cModule = 9;
+
+  const
+    cProperty = 10;
+
+  const
+    cUnit = 11;
+
+  const
+    cValue = 12;
+
+  const
+    cEnum = 13;
+
+  const
+    cKeyword = 14;
+
+  const
+    cSnippet = 15;
+
+  const
+    cColor = 16;
+
+  const
+    cFile = 17;
+
+  const
+    cReference = 18;
+
+  const
+    cFolder = 19;
+
+  const
+    cEnumMember = 20;
+
+  const
+    cConstant = 21;
+
+  const
+    cStruct = 22;
+
+  const
+    cEvent = 23;
+
+  const
+    cOperator = 24;
+
+  const
+    cTypeParameter = 25;
   end;
 
   TLSPCompletionItemKindValues = class
@@ -2203,11 +2289,11 @@ type
     parameterInformation: TLSPClientParameterInformation;
 
     // The client supports the `activeParameter` property on
-		// `SignatureInformation` literal.
+    // `SignatureInformation` literal.
     //
-		// @since 3.16.0
+    // @since 3.16.0
     //
-		activeParameterSupport: boolean;
+    activeParameterSupport: boolean;
   public
     constructor Create;
     destructor Destroy; override;
@@ -2340,7 +2426,6 @@ type
     //
     dataSupport: boolean;
 
-
     // Whether the client supports resolving additional code action
     // properties via a separate `codeAction/resolve` request.
     //
@@ -2380,7 +2465,7 @@ type
     //
     // @since 3.16.0
     //
-    tagSupport: TLSPtagSupport;
+    tagSupport: TLSPTagSupport;
 
     // The client supports an additional label presented in the UI when
     // registering a document symbol provider.
@@ -2438,7 +2523,7 @@ type
   TLSPPrepareSupportDefaultBehavior = class
     // The client's default behavior is to select the identifier
     // according the to language's syntax rule.
-    Identifier: Cardinal;
+    identifier: Cardinal;
   end;
 
   TLSPRenameClientCapabilities = class
@@ -2494,7 +2579,7 @@ type
     // `endCharacter` properties in a FoldingRange.
     lineFoldingOnly: boolean;
 
-    //Specific options for the folding range kind.
+    // Specific options for the folding range kind.
     //
     // @since 3.17.0
     //
@@ -2591,21 +2676,21 @@ type
   end;
 
   TLSPTypeHierarchyClientCapabilities = class
-	public
-	  // Whether implementation supports dynamic registration. If this is set to
-	  // `true` the client supports the new `(TextDocumentRegistrationOptions &
-	  // StaticRegistrationOptions)` return value for the corresponding server
-	  // capability as well.
+  public
+    // Whether implementation supports dynamic registration. If this is set to
+    // `true` the client supports the new `(TextDocumentRegistrationOptions &
+    // StaticRegistrationOptions)` return value for the corresponding server
+    // capability as well.
     //
-	  dynamicRegistration: boolean;
+    dynamicRegistration: boolean;
   end;
 
   TLSPInlineValueClientCapabilities = class
-	public
-	  // Whether implementation supports dynamic registration for inline
-	  // value providers.
+  public
+    // Whether implementation supports dynamic registration for inline
+    // value providers.
     //
-	  dynamicRegistration: boolean;
+    dynamicRegistration: boolean;
   end;
 
   TLSPInlayHintClientCapabilities = class
@@ -2620,11 +2705,11 @@ type
     // hint.
     //
     resolveSupport: TLSPResolveSupport; // Optional
-      //
-      // The properties that a client can resolve lazily.
-      //
-      // properties: string[];
-      //
+    //
+    // The properties that a client can resolve lazily.
+    //
+    // properties: string[];
+    //
   end;
 
   TLSPDiagnosticClientCapabilities = class
@@ -2668,7 +2753,8 @@ type
     destructor Destroy; override;
   end;
 
-  TLSPSemanticTokenTypes = (semtokenNone,semtokenFull,semtokenDelta,semtokenFullFalse,semtokenDeltaFalse);
+  TLSPSemanticTokenTypes = (semtokenNone, semtokenFull, semtokenDelta,
+    semtokenFullFalse, semtokenDeltaFalse);
 
   TLSPRequests = class
   public
@@ -2681,8 +2767,8 @@ type
     // full: boolean;
     {
       /**
-       * The client will send the `textDocument/semanticTokens/full/delta`
-       * request if the server provides a corresponding handler.
+      * The client will send the `textDocument/semanticTokens/full/delta`
+      * request if the server provides a corresponding handler.
       */
       delta?: boolean
     }
@@ -2703,42 +2789,42 @@ type
     requests: TLSPRequests;
 
     // The token types that the client supports.
-      // namespace = 'namespace',
-      // type = 'type',
-      // class = 'class',
-      // enum = 'enum',
-      // interface = 'interface',
-      // struct = 'struct',
-      // typeParameter = 'typeParameter',
-      // parameter = 'parameter',
-      // variable = 'variable',
-      // property = 'property',
-      // enumMember = 'enumMember',
-      // event = 'event',
-      // function = 'function',
-      // method = 'method',
-      // macro = 'macro',
-      // keyword = 'keyword',
-      // modifier = 'modifier',
-      // comment = 'comment',
-      // string = 'string',
-      // number = 'number',
-      // regexp = 'regexp',
-      // operator = 'operator'
-      // decorator = 'decorator'  @since 3.17.0
+    // namespace = 'namespace',
+    // type = 'type',
+    // class = 'class',
+    // enum = 'enum',
+    // interface = 'interface',
+    // struct = 'struct',
+    // typeParameter = 'typeParameter',
+    // parameter = 'parameter',
+    // variable = 'variable',
+    // property = 'property',
+    // enumMember = 'enumMember',
+    // event = 'event',
+    // function = 'function',
+    // method = 'method',
+    // macro = 'macro',
+    // keyword = 'keyword',
+    // modifier = 'modifier',
+    // comment = 'comment',
+    // string = 'string',
+    // number = 'number',
+    // regexp = 'regexp',
+    // operator = 'operator'
+    // decorator = 'decorator'  @since 3.17.0
     tokenTypes: TArray<string>;
 
     // The token modifiers that the client supports.
-      // declaration = 'declaration',
-      // definition = 'definition',
-      // readonly = 'readonly',
-      // static = 'static',
-      // deprecated = 'deprecated',
-      // abstract = 'abstract',
-      // async = 'async',
-      // modification = 'modification',
-      // documentation = 'documentation',
-      // defaultLibrary = 'defaultLibrary'
+    // declaration = 'declaration',
+    // definition = 'definition',
+    // readonly = 'readonly',
+    // static = 'static',
+    // deprecated = 'deprecated',
+    // abstract = 'abstract',
+    // async = 'async',
+    // modification = 'modification',
+    // documentation = 'documentation',
+    // defaultLibrary = 'defaultLibrary'
     tokenModifiers: TArray<string>;
 
     // The formats the clients supports.
@@ -2951,63 +3037,64 @@ type
     cancel: boolean;
 
     // The list of requests for which the client
-		// will retry the request if it receives a
-		// response with error code `ContentModified``
+    // will retry the request if it receives a
+    // response with error code `ContentModified``
     //
-		retryOnContentModified: TArray<string>;
+    retryOnContentModified: TArray<string>;
   public
     destructor Destroy; override;
   end;
 
   TLSPGeneralClientCapabilities = class
-		// Client capabilities specific to regular expressions.
+    // Client capabilities specific to regular expressions.
     //
-		// @since 3.16.0
+    // @since 3.16.0
     //
-		regularExpressions: TLSPRegularExpressionsClientCapabilities;
+    regularExpressions: TLSPRegularExpressionsClientCapabilities;
 
-		// Client capabilities specific to the client's markdown parser.
+    // Client capabilities specific to the client's markdown parser.
     //
-		// @since 3.16.0
+    // @since 3.16.0
     //
-		markdown: TLSPMarkdownClientCapabilities;
+    markdown: TLSPMarkdownClientCapabilities;
 
     // Client capability that signals how the client
-		// handles stale requests (e.g. a request
-		// for which the client will not process the response
-		// anymore since the information is outdated).
+    // handles stale requests (e.g. a request
+    // for which the client will not process the response
+    // anymore since the information is outdated).
     //
-		// @since 3.17.0
+    // @since 3.17.0
     //
-		staleRequestSupport: TLSPStaleRequestSupportClientCapabilities;
+    staleRequestSupport: TLSPStaleRequestSupportClientCapabilities;
 
     // The position encodings supported by the client. Client and server
-		// have to agree on the same position encoding to ensure that offsets
-		// (e.g. character position in a line) are interpreted the same on both
-		// side.
+    // have to agree on the same position encoding to ensure that offsets
+    // (e.g. character position in a line) are interpreted the same on both
+    // side.
     //
-		// To keep the protocol backwards compatible the following applies: if
-		// the value 'utf-16' is missing from the array of position encodings
-		// servers can assume that the client supports UTF-16. UTF-16 is
-		// therefore a mandatory encoding.
+    // To keep the protocol backwards compatible the following applies: if
+    // the value 'utf-16' is missing from the array of position encodings
+    // servers can assume that the client supports UTF-16. UTF-16 is
+    // therefore a mandatory encoding.
     //
-		// If omitted it defaults to ['utf-16'].
+    // If omitted it defaults to ['utf-16'].
     //
-		// Implementation considerations: since the conversion from one encoding
-		// into another requires the content of the file / line the conversion
-		// is best done where the file is read which is usually on the server
-		// side.
+    // Implementation considerations: since the conversion from one encoding
+    // into another requires the content of the file / line the conversion
+    // is best done where the file is read which is usually on the server
+    // side.
     //
-		// @since 3.17.0
+    // @since 3.17.0
     //
-		positionEncodings: TArray<string>; // Optional. Eg. (['utf-8', 'utf-16', 'utf-32']).
+    positionEncodings: TArray<string>;
+    // Optional. Eg. (['utf-8', 'utf-16', 'utf-32']).
   public
     destructor Destroy; override;
-	end;
+  end;
 
   TLSPClientCapabilities = class
   public
-	  // Workspace specific client capabilities.
+    // Workspace specific client capabilities.
     workspace: TLSPWorkspace;
 
     // Text document specific client capabilities.
@@ -3024,94 +3111,121 @@ type
 
     // General client capabilities.
     //
-	  // @since 3.16.0
+    // @since 3.16.0
     //
     general: TLSPGeneralClientCapabilities;
   public
     constructor Create;
     destructor Destroy; override;
-    procedure AddCallHierarchySupport(const dynamicRegistration: Boolean);
-    procedure AddCodeActionSupport(const dynamicRegistration, isPreferredSupport, disabledSupport, dataSupport,
-        honorsChangeAnnotations: Boolean; const codeActions: TArray<String> = nil; const resolveProperties: TArray<String>
-        = nil);
-    procedure AddCodeLensSupport(const dynamicRegistration: Boolean);
-    procedure AddColorProvider(const dynamicRegistration: Boolean);
-    procedure AddCompletionSupport(const dynamicRegistration, snippetSupport, commitCharactersSupport,
-        documentationFormatPlainText, documentationFormatMarkdown, deprecatedSupport, preselectSupport,
-        insertReplaceSupport, contextSupport: Boolean; const completionItemKindValues: TArray<Integer> = nil; const
-        resolveSuppert: TArray<String> = nil; const insertTextModeSupportValues: TArray<TLSPInsertTextMode> = nil; const
-        tagSupport: TLSPtagSupportValues = nil);
-    procedure AddDeclarationSupport(const bLinkSupport: Boolean = False);
-    procedure AddDefinitionSupport(const bLinkSupport: Boolean = False);
-    procedure AddDiagnosticSupport(const dynamicRegistration, relatedDocumentSupport: Boolean);
-    procedure AddDocumentHighlightsSupport(const dynamicRegistration: Boolean);
-    procedure AddDocumentLinkSupport(const dynamicRegistration, toolTipSupport: Boolean);
-    procedure AddDocumentSymbolSupport(const hierarchicalSymbolSupport, dynamicRegistration, labelSupport: Boolean; const
-        values: TArray<Integer> = nil; const tagSupport: TLSPtagSupport = nil);
-    procedure AddFoldingRangeSupport(const dynamicRegistration: Boolean; const rangeLimit: Integer; const lineFoldingOnly:
-        Boolean);
-    procedure AddFormattingSupport(const dynamicRegistration: Boolean);
-    procedure AddGeneralMarkdown(const parser, version: string; const allowedTags: TArray<string>);
-    procedure AddGeneralPositionEncodings(const positionEncodings: TArray<string>);
+    procedure AddCallHierarchySupport(const dynamicRegistration: boolean);
+    procedure AddCodeActionSupport(const dynamicRegistration,
+      isPreferredSupport, disabledSupport, dataSupport, honorsChangeAnnotations
+      : boolean; const codeActions: TArray<String> = nil;
+      const resolveProperties: TArray<String> = nil);
+    procedure AddCodeLensSupport(const dynamicRegistration: boolean);
+    procedure AddColorProvider(const dynamicRegistration: boolean);
+    procedure AddCompletionSupport(const dynamicRegistration, snippetSupport,
+      commitCharactersSupport, documentationFormatPlainText,
+      documentationFormatMarkdown, deprecatedSupport, preselectSupport,
+      insertReplaceSupport, contextSupport: boolean;
+      const completionItemKindValues: TArray<Integer> = nil;
+      const resolveSuppert: TArray<String> = nil;
+      const insertTextModeSupportValues: TArray<TLSPInsertTextMode> = nil;
+      const tagSupport: TLSPTagSupportValues = nil);
+    procedure AddDeclarationSupport(const bLinkSupport: boolean = False);
+    procedure AddDefinitionSupport(const bLinkSupport: boolean = False);
+    procedure AddDiagnosticSupport(const dynamicRegistration,
+      relatedDocumentSupport: boolean);
+    procedure AddDocumentHighlightsSupport(const dynamicRegistration: boolean);
+    procedure AddDocumentLinkSupport(const dynamicRegistration,
+      tooltipSupport: boolean);
+    procedure AddDocumentSymbolSupport(const hierarchicalSymbolSupport,
+      dynamicRegistration, labelSupport: boolean;
+      const values: TArray<Integer> = nil;
+      const tagSupport: TLSPTagSupport = nil);
+    procedure AddFoldingRangeSupport(const dynamicRegistration: boolean;
+      const rangeLimit: Integer; const lineFoldingOnly: boolean);
+    procedure AddFormattingSupport(const dynamicRegistration: boolean);
+    procedure AddGeneralMarkdown(const parser, version: string;
+      const allowedTags: TArray<string>);
+    procedure AddGeneralPositionEncodings(const positionEncodings
+      : TArray<string>);
     procedure AddGeneralRegularExpressions(const engine, version: string);
-    procedure AddGeneralStaleRequestSupport(const cancel: Boolean; const retryOnContentModified: TArray<string>);
-    procedure AddHoverSupport(const dynamicRegistration, contentFormatPlainText, contentFormatMarkdown: Boolean);
-    procedure AddImplementationSupport(const bLinkSupport: Boolean = False);
-    procedure AddInlayHintSupport(const dynamicRegistration, resolveSupport: Boolean; const properties: TArray<string>);
-    procedure AddInlineValueSupport(const dynamicRegistration: Boolean);
-    procedure AddLinkedEditingRangeSupport(const dynamicRegistration: Boolean);
-    procedure AddMonikerSupport(const dynamicRegistration: Boolean);
-    procedure AddNotebookDocumentSupport(const dynamicRegistration, executionSummerySupport: Boolean);
-    procedure AddOnTypeFormattingSupport(const dynamicRegistration: Boolean);
-    procedure AddPublishDiagnosticsSupport(const relatedInformation, codeDescriptionSupport, versionSupport, dataSupport:
-        Boolean; const tagSupport: TLSPtagSupportValues = nil);
-    procedure AddRangeFormattingSupport(const dynamicRegistration: Boolean);
-    procedure AddReferencesSupport(const dynamicRegistration: Boolean);
-    procedure AddRenameSupport(const dynamicRegistration, prepareSupport, honorsChangeAnnotations: Boolean; const
-        prepareSupportDefaultBehaviorId: Integer = 0);
-    procedure AddSelectionRangeSupport(const dynamicRegistration: Boolean);
-    procedure AddSemanticTokensSupport(const dynamicRegistration, overlappingTokenSupport, multilineTokenSupport, range:
-        Boolean; const semanticToken: TLSPSemanticTokenTypes; const tokenTypes: TArray<String> = nil; const tokenModifiers:
-        TArray<String> = nil; const formats: TArray<String> = nil);
-    procedure AddSignatureHelpSupport(const dynamicRegistration, contentFormatPlainText, contentFormatMarkdown,
-        contextSupport, labelOffsetSupport: Boolean);
-    procedure AddSynchronizationSupport(const didSave, willSave, willSaveWaitUntil, dynamicRegistration: Boolean);
-    procedure AddTypeDefinitionSupport(const bLinkSupport: Boolean = False);
-    procedure AddTypeHierarchySupport(const dynamicRegistration: Boolean);
+    procedure AddGeneralStaleRequestSupport(const cancel: boolean;
+      const retryOnContentModified: TArray<string>);
+    procedure AddHoverSupport(const dynamicRegistration, contentFormatPlainText,
+      contentFormatMarkdown: boolean);
+    procedure AddImplementationSupport(const bLinkSupport: boolean = False);
+    procedure AddInlayHintSupport(const dynamicRegistration, resolveSupport
+      : boolean; const properties: TArray<string>);
+    procedure AddInlineValueSupport(const dynamicRegistration: boolean);
+    procedure AddLinkedEditingRangeSupport(const dynamicRegistration: boolean);
+    procedure AddMonikerSupport(const dynamicRegistration: boolean);
+    procedure AddNotebookDocumentSupport(const dynamicRegistration,
+      executionSummerySupport: boolean);
+    procedure AddOnTypeFormattingSupport(const dynamicRegistration: boolean);
+    procedure AddPublishDiagnosticsSupport(const relatedInformation,
+      codeDescriptionSupport, versionSupport, dataSupport: boolean;
+      const tagSupport: TLSPTagSupportValues = nil);
+    procedure AddRangeFormattingSupport(const dynamicRegistration: boolean);
+    procedure AddReferencesSupport(const dynamicRegistration: boolean);
+    procedure AddRenameSupport(const dynamicRegistration, prepareSupport,
+      honorsChangeAnnotations: boolean;
+      const prepareSupportDefaultBehaviorId: Integer = 0);
+    procedure AddSelectionRangeSupport(const dynamicRegistration: boolean);
+    procedure AddSemanticTokensSupport(const dynamicRegistration,
+      overlappingTokenSupport, multilineTokenSupport, range: boolean;
+      const semanticToken: TLSPSemanticTokenTypes;
+      const tokenTypes: TArray<String> = nil;
+      const tokenModifiers: TArray<String> = nil;
+      const formats: TArray<String> = nil);
+    procedure AddSignatureHelpSupport(const dynamicRegistration,
+      contentFormatPlainText, contentFormatMarkdown, contextSupport,
+      labelOffsetSupport: boolean);
+    procedure AddSynchronizationSupport(const didSave, willSave,
+      willSaveWaitUntil, dynamicRegistration: boolean);
+    procedure AddTypeDefinitionSupport(const bLinkSupport: boolean = False);
+    procedure AddTypeHierarchySupport(const dynamicRegistration: boolean);
     procedure AddWindowShowDocument;
-    procedure AddWindowShowMessage(const additionalPropertiesSupport: Boolean);
-    procedure AddWindowWorkDoneProgress(const value: Boolean = True);
-    procedure AddWorkspaceCapabilities(const applyEdit, workspaceFolders, configuration: Boolean);
-    procedure AddWorkspaceCodeLens(const refreshSupport: Boolean);
-    procedure AddWorkspaceDiagnostics(const refreshSupport: Boolean);
-    procedure AddWorkspaceDidChangeConfiguration(const dynamicRegistration: Boolean);
-    procedure AddWorkspaceDidChangeWatchedFiles(const dynamicRegistration: Boolean);
-    procedure AddWorkspaceEdit(const documentChanges, normalizeLineEndings: Boolean; const failureHandling: string = 'transactional';
-        const changeAnnotationSupport: Boolean = False; const changeAnnotationGroupsOnLabel: Boolean = False; const
-        resourceOperations: TArray<TLSPResourceOperationKind> = nil);
-    procedure AddWorkspaceExecuteCommand(const dynamicRegistration: Boolean);
-    procedure AddWorkspaceFileOperations(const dynamicRegistration, didCreate, willCreate, didRename, willRename,
-        didDelete, willDelete: Boolean);
-    procedure AddWorkspaceInlayHint(const refreshSupport: Boolean);
-    procedure AddWorkspaceInlineValue(const refreshSupport: Boolean);
-    procedure AddWorkspaceSemanticTokens(const refreshSupport: Boolean);
-    procedure AddWorkspaceSymbol(const dynamicRegistration: Boolean; const symbolKindValues: TArray<Integer> = nil; const
-        tagSupportValues: TArray<TLSPCompletionItemTag> = nil);
+    procedure AddWindowShowMessage(const additionalPropertiesSupport: boolean);
+    procedure AddWindowWorkDoneProgress(const value: boolean = True);
+    procedure AddWorkspaceCapabilities(const applyEdit, workspaceFolders,
+      configuration: boolean);
+    procedure AddWorkspaceCodeLens(const refreshSupport: boolean);
+    procedure AddWorkspaceDiagnostics(const refreshSupport: boolean);
+    procedure AddWorkspaceDidChangeConfiguration(const dynamicRegistration
+      : boolean);
+    procedure AddWorkspaceDidChangeWatchedFiles(const dynamicRegistration
+      : boolean);
+    procedure AddWorkspaceEdit(const documentChanges, normalizeLineEndings
+      : boolean; const failureHandling: string = 'transactional';
+      const changeAnnotationSupport: boolean = False;
+      const changeAnnotationGroupsOnLabel: boolean = False;
+      const resourceOperations: TArray<TLSPResourceOperationKind> = nil);
+    procedure AddWorkspaceExecuteCommand(const dynamicRegistration: boolean);
+    procedure AddWorkspaceFileOperations(const dynamicRegistration, didCreate,
+      willCreate, didRename, willRename, didDelete, willDelete: boolean);
+    procedure AddWorkspaceInlayHint(const refreshSupport: boolean);
+    procedure AddWorkspaceInlineValue(const refreshSupport: boolean);
+    procedure AddWorkspaceSemanticTokens(const refreshSupport: boolean);
+    procedure AddWorkspaceSymbol(const dynamicRegistration: boolean;
+      const symbolKindValues: TArray<Integer> = nil;
+      const tagSupportValues: TArray<TLSPCompletionItemTag> = nil);
   end;
 
   TLSPInitializeParams = class(TLSPBaseParams)
   public
-	  // The process ID of the parent process that started the server.
-	  // Is null if the process has not been started by another process.
-	  // If the parent process is not alive, then the server should exit
-	  // (see exit notification) its process.
-	  processId: Integer; // integer | null
+    // The process ID of the parent process that started the server.
+    // Is null if the process has not been started by another process.
+    // If the parent process is not alive, then the server should exit
+    // (see exit notification) its process.
+    processId: Integer; // integer | null
 
-	  // Information about the client
+    // Information about the client
     //
-	  // @since 3.15.0
-	  //
-	  clientInfo: TLSPClientInfo;
+    // @since 3.15.0
+    //
+    clientInfo: TLSPClientInfo;
 
     // The locale the client is currently showing the user interface
     // in. This must not necessarily be the locale of the operating
@@ -3124,36 +3238,36 @@ type
     //
     locale: string;
 
-	  // The rootPath of the workspace. Is null
-	  // if no folder is open.
+    // The rootPath of the workspace. Is null
+    // if no folder is open.
     //
-	  // @deprecated in favour of rootUri.
+    // @deprecated in favour of rootUri.
     //
-	  rootPath: string;
+    rootPath: string;
 
-	  // The rootUri of the workspace. Is null if no
-	  // folder is open. If both `rootPath` and `rootUri` are set
-	  // `rootUri` wins.
-	  rootUri: TLSPDocumentUri;
+    // The rootUri of the workspace. Is null if no
+    // folder is open. If both `rootPath` and `rootUri` are set
+    // `rootUri` wins.
+    rootUri: TLSPDocumentUri;
 
-	  // User provided initialization options.
-	  initializationOptions: ISuperObject;
+    // User provided initialization options.
+    initializationOptions: ISuperObject;
 
-	  // The capabilities provided by the client (editor or tool)
+    // The capabilities provided by the client (editor or tool)
     capabilities: TLSPClientCapabilities;
 
-	  // The initial trace setting. If omitted trace is disabled ('off').
-	  trace: string; //'off' | 'messages' | 'verbose';
+    // The initial trace setting. If omitted trace is disabled ('off').
+    trace: string; // 'off' | 'messages' | 'verbose';
 
-	  // The workspace folders configured in the client when the server starts.
-	  // This property is only available if the client supports workspace folders.
-	  // It can be `null` if the client supports workspace folders but none are
-	  // configured.
-	  //
-	  // @since 3.6.0
+    // The workspace folders configured in the client when the server starts.
+    // This property is only available if the client supports workspace folders.
+    // It can be `null` if the client supports workspace folders but none are
+    // configured.
+    //
+    // @since 3.6.0
     //
     [REVAL(roEmptyArrayToNull)]
-	  workspaceFolders: TArray<TLSPWorkspaceFolder>; //WorkspaceFolder[] | null;
+    workspaceFolders: TArray<TLSPWorkspaceFolder>; // WorkspaceFolder[] | null;
   public
     constructor Create;
     destructor Destroy; override;
@@ -3164,7 +3278,7 @@ type
   TLSPSaveOption = class
   public
     // The client is supposed to include the content on save.
-    includeText: Boolean;
+    includeText: boolean;
   end;
 
   TLSPTextDocumentSyncOptions = class
@@ -3177,7 +3291,7 @@ type
     // See TextDocumentSyncKind.None, TextDocumentSyncKind.Full,
     // and TextDocumentSyncKind.Incremental.
     // If omitted, it defaults to TextDocumentSyncKind.None.
-    change: TLSPTextDocumentSyncKind;
+    Change: TLSPTextDocumentSyncKind;
   end;
 
   TLSPTextDocumentServerSyncOptions = class
@@ -3190,7 +3304,7 @@ type
     // TextDocumentSyncKind.None, TextDocumentSyncKind.Full and
     // TextDocumentSyncKind.Incremental. If omitted it defaults to
     // TextDocumentSyncKind.None.
-    change: TLSPTextDocumentSyncKind;
+    Change: TLSPTextDocumentSyncKind;
 
     // If present will save notifications are sent to the server. If omitted
     // the notification should not be sent.
@@ -3294,7 +3408,8 @@ type
     save: boolean;
   end;
 
-  TLSPNotebookDocumentSyncRegistrationOptions = class(TLSPNotebookDocumentSyncOptions)
+  TLSPNotebookDocumentSyncRegistrationOptions = class
+    (TLSPNotebookDocumentSyncOptions)
   public
     // The id used to register the request. The id can be used to deregister
     // the request again. See also Registration#id.
@@ -3319,19 +3434,22 @@ type
     // Is either a detailed structure defining each notification
     // or for backwards compatibility, the TextDocumentSyncKind number.
     // If omitted, it defaults to `TextDocumentSyncKind.None`.
-    textDocumentSync: TLSPTextDocumentServerSyncOptions; { textDocumentSync = TLSPTextDocumentServerSyncOptions | TLSPTextDocumentSyncKind }
+    textDocumentSync: TLSPTextDocumentServerSyncOptions;
+    { textDocumentSync = TLSPTextDocumentServerSyncOptions | TLSPTextDocumentSyncKind }
 
-    //Defines how notebook documents are synced.
+    // Defines how notebook documents are synced.
     //
     // @since 3.17.0
     //
-    notebookDocumentSync: TLSPNotebookDocumentSyncRegistrationOptions; // TLSPNotebookDocumentSyncOptions | TLSPNotebookDocumentSyncRegistrationOptions;
+    notebookDocumentSync: TLSPNotebookDocumentSyncRegistrationOptions;
+    // TLSPNotebookDocumentSyncOptions | TLSPNotebookDocumentSyncRegistrationOptions;
 
     // The server provides completion support.
     completionProvider: TLSPCompletionOptions;
 
     // The server provides hover support.
-    hoverProvider: TLSPHoverOptions; { hoverProvider = TLSPHoverOptions | Boolean }
+    hoverProvider: TLSPHoverOptions;
+    { hoverProvider = TLSPHoverOptions | Boolean }
 
     // The server provides signature help support.
     signatureHelpProvider: TLSPSignatureHelpOptions;
@@ -3340,38 +3458,46 @@ type
     //
     // @since 3.14.0
     //
-    declarationProvider: TLSPDeclarationRegistrationOptions; { declarationProvider = TLSPDeclarationRegistrationOptions | TLSPDeclarationOptions | Boolean }
+    declarationProvider: TLSPDeclarationRegistrationOptions;
+    { declarationProvider = TLSPDeclarationRegistrationOptions | TLSPDeclarationOptions | Boolean }
 
     // The server provides goto definition support.
-    definitionProvider: TLSPDefinitionOptions; { definitionProvider = TLSPDefinitionOptions | Boolean }
+    definitionProvider: TLSPDefinitionOptions;
+    { definitionProvider = TLSPDefinitionOptions | Boolean }
 
     // The server provides goto type definition support.
     //
     // @since 3.6.0
     //
-    typeDefinitionProvider: TLSPTypeDefinitionRegistrationOptions; { typeDefinitionProvider = boolean | TLSPTypeDefinitionOptions | TLSPTypeDefinitionRegistrationOptions }
+    typeDefinitionProvider: TLSPTypeDefinitionRegistrationOptions;
+    { typeDefinitionProvider = boolean | TLSPTypeDefinitionOptions | TLSPTypeDefinitionRegistrationOptions }
 
     // The server provides goto implementation support.
     //
     // @since 3.6.0
     //
-    implementationProvider: TLSPImplementationRegistrationOptions; { implementationProvider = boolean | TLSPImplementationOptions | TLSPImplementationRegistrationOptions }
+    implementationProvider: TLSPImplementationRegistrationOptions;
+    { implementationProvider = boolean | TLSPImplementationOptions | TLSPImplementationRegistrationOptions }
 
     // The server provides find references support.
     //
-    referencesProvider: TLSPReferenceOptions; { referencesProvider = boolean | TLSPReferenceOptions }
+    referencesProvider: TLSPReferenceOptions;
+    { referencesProvider = boolean | TLSPReferenceOptions }
 
     // The server provides document highlight support.
-    documentHighlightProvider: TLSPDocumentHighlightOptions; { documentHighlightProvider = boolean | TLSPDocumentHighlightOptions }
+    documentHighlightProvider: TLSPDocumentHighlightOptions;
+    { documentHighlightProvider = boolean | TLSPDocumentHighlightOptions }
 
     // The server provides document symbol support.
-    documentSymbolProvider: TLSPDocumentSymbolOptions; { documentSymbolProvider = boolean | TLSPDocumentSymbolOptions }
+    documentSymbolProvider: TLSPDocumentSymbolOptions;
+    { documentSymbolProvider = boolean | TLSPDocumentSymbolOptions }
 
     // The server provides code actions.
     // The `CodeActionOptions` return type is only valid if the client signals
     // code action literal support via the property
     // `textDocument.codeAction.codeActionLiteralSupport`.
-    codeActionProvider: TLSPCodeActionOptions; { codeActionProvider = boolean | TLSPCodeActionOptions }
+    codeActionProvider: TLSPCodeActionOptions;
+    { codeActionProvider = boolean | TLSPCodeActionOptions }
 
     // The server provides CodeLens.
     codeLensProvider: TLSPCodeLensOptions;
@@ -3383,13 +3509,16 @@ type
     //
     // @since 3.6.0
     //
-    colorProvider: TLSPDocumentColorRegistrationOptions; { colorProvider = boolean | TLSPDocumentColorOptions | TLSPDocumentColorRegistrationOptions }
+    colorProvider: TLSPDocumentColorRegistrationOptions;
+    { colorProvider = boolean | TLSPDocumentColorOptions | TLSPDocumentColorRegistrationOptions }
 
     // The server provides document formatting.
-    documentFormattingProvider: TLSPDocumentFormattingOptions; { documentFormattingProvider = boolean | TLSPDocumentFormattingOptions }
+    documentFormattingProvider: TLSPDocumentFormattingOptions;
+    { documentFormattingProvider = boolean | TLSPDocumentFormattingOptions }
 
     // The server provides document range formatting.
-    documentRangeFormattingProvider: TLSPDocumentRangeFormattingOptions; { documentRangeFormattingProvider = boolean | TLSPDocumentRangeFormattingOptions }
+    documentRangeFormattingProvider: TLSPDocumentRangeFormattingOptions;
+    { documentRangeFormattingProvider = boolean | TLSPDocumentRangeFormattingOptions }
 
     // The server provides document formatting on typing.
     documentOnTypeFormattingProvider: TLSPDocumentOnTypeFormattingOptions;
@@ -3397,13 +3526,15 @@ type
     // The server provides rename support. RenameOptions may only be
     // specified if the client states that it supports
     // `prepareSupport` in its initial `initialize` request.
-    renameProvider: TLSPRenameOptions; { renameProvider = boolean | TLSPRenameOptions }
+    renameProvider: TLSPRenameOptions;
+    { renameProvider = boolean | TLSPRenameOptions }
 
     // The server provides folding provider support.
     //
     // @since 3.10.0
     //
-    foldingRangeProvider: TLSPFoldingRangeRegistrationOptions; { foldingRangeProvider = boolean | TLSPFoldingRangeOptions | TLSPFoldingRangeRegistrationOptions }
+    foldingRangeProvider: TLSPFoldingRangeRegistrationOptions;
+    { foldingRangeProvider = boolean | TLSPFoldingRangeOptions | TLSPFoldingRangeRegistrationOptions }
 
     // The server provides execute command support.
     executeCommandProvider: TLSPExecuteCommandOptions;
@@ -3412,58 +3543,68 @@ type
     //
     // @since 3.15.0
     //
-    selectionRangeProvider: TLSPSelectionRangeRegistrationOptions; { selectionRangeProvider = boolean | TLSPSelectionRangeOptions | TLSPSelectionRangeRegistrationOptions }
+    selectionRangeProvider: TLSPSelectionRangeRegistrationOptions;
+    { selectionRangeProvider = boolean | TLSPSelectionRangeOptions | TLSPSelectionRangeRegistrationOptions }
 
     // The server provides workspace symbol support.
-    workspaceSymbolProvider: TLSPWorkspaceSymbolOptions; { workspaceSymbolProvider = boolean | TLSPWorkspaceSymbolOptions }
+    workspaceSymbolProvider: TLSPWorkspaceSymbolOptions;
+    { workspaceSymbolProvider = boolean | TLSPWorkspaceSymbolOptions }
 
     // The server provides linked editing range support.
     //
     // @since 3.16.0
     //
-    linkedEditingRangeProvider: TLSPLinkedEditingRangeRegistrationOptions; { linkedEditingRangeProvider = boolean | TLSPLinkedEditingRangeOptions | LinkedEditingRangeRegistrationOptions }
+    linkedEditingRangeProvider: TLSPLinkedEditingRangeRegistrationOptions;
+    { linkedEditingRangeProvider = boolean | TLSPLinkedEditingRangeOptions | LinkedEditingRangeRegistrationOptions }
 
     // The server provides call hierarchy support.
     //
     // @since 3.16.0
     //
-    callHierarchyProvider: TLSPCallHierarchyRegistrationOptions; { callHierarchyProvider? = boolean | TLSPCallHierarchyOptions | TLSPCallHierarchyRegistrationOptions }
+    callHierarchyProvider: TLSPCallHierarchyRegistrationOptions;
+    { callHierarchyProvider? = boolean | TLSPCallHierarchyOptions | TLSPCallHierarchyRegistrationOptions }
 
     // The server provides semantic tokens support.
     //
     // @since 3.16.0
     //
-    semanticTokensProvider: TLSPSemanticTokensRegistrationOptions; { semanticTokensProvider?: TLSPSemanticTokensOptions | TLSPSemanticTokensRegistrationOptions }
+    semanticTokensProvider: TLSPSemanticTokensRegistrationOptions;
+    { semanticTokensProvider?: TLSPSemanticTokensOptions | TLSPSemanticTokensRegistrationOptions }
 
     // Whether server provides moniker support.
     //
     // @since 3.16.0
     //
-    monikerProvider: TLSPMonikerRegistrationOptions; { monikerProvider?: boolean | TLSPMonikerOptions | TLSPMonikerRegistrationOptions }
+    monikerProvider: TLSPMonikerRegistrationOptions;
+    { monikerProvider?: boolean | TLSPMonikerOptions | TLSPMonikerRegistrationOptions }
 
     // The server provides type hierarchy support.
     //
     // @since 3.17.0
     //
-    typeHierarchyProvider: TLSPTypeHierarchyRegistrationOptions; {typeHierarchyProvider?: boolean | TypeHierarchyOptions | TypeHierarchyRegistrationOptions }
+    typeHierarchyProvider: TLSPTypeHierarchyRegistrationOptions;
+    { typeHierarchyProvider?: boolean | TypeHierarchyOptions | TypeHierarchyRegistrationOptions }
 
     // The server provides inline values.
     //
     // @since 3.17.0
     //
-    inlineValueProvider: TLSPInlineValueRegistrationOptions; { inlineValueProvider?: boolean | InlineValueOptions | InlineValueRegistrationOptions }
+    inlineValueProvider: TLSPInlineValueRegistrationOptions;
+    { inlineValueProvider?: boolean | InlineValueOptions | InlineValueRegistrationOptions }
 
     // The server provides inlay hints.
     //
     // @since 3.17.0
     //
-    inlayHintProvider: TLSPInlayHintRegistrationOptions; { inlayHintProvider?: boolean | InlayHintOptions | InlayHintRegistrationOptions }
+    inlayHintProvider: TLSPInlayHintRegistrationOptions;
+    { inlayHintProvider?: boolean | InlayHintOptions | InlayHintRegistrationOptions }
 
     // The server has support for pull model diagnostics.
     //
     // @since 3.17.0
     //
-    diagnosticProvider: TLSPDiagnosticRegistrationOptions; { diagnosticProvider?: DiagnosticOptions | DiagnosticRegistrationOptions ] }
+    diagnosticProvider: TLSPDiagnosticRegistrationOptions;
+    { diagnosticProvider?: DiagnosticOptions | DiagnosticRegistrationOptions ] }
 
     // Workspace specific server capabilities
     workspace: TLSPWorkspaceServer;
@@ -3556,6 +3697,7 @@ type
     // The method / capability to unregister for.
     method: string;
   end;
+
   TLSPUnregistrations = TArray<TLSPUnregistration>;
 
   TLSPWorkspaceFoldersChangeEvent = record
@@ -3587,6 +3729,7 @@ type
     // The configuration section asked for.
     section: string;
   end;
+
   TLSPConfigurationParams = TArray<TLSPConfigurationItem>;
 
   TLSPFileEvent = record
@@ -3597,6 +3740,7 @@ type
     [ALIAS('type')]
     typ: Cardinal;
   end;
+
   TLSPFileEvents = TArray<TLSPFileEvent>;
 
   TLSPDidChangeWatchedFilesParams = class(TLSPBaseParams)
@@ -3615,7 +3759,7 @@ type
     workDoneToken: TLSPProgressToken;
 
     // An optional token that a server can use to report partial results (e.g.
-	  // streaming) to the client.
+    // streaming) to the client.
     partialResultToken: TLSPProgressToken;
   end;
 
@@ -3737,7 +3881,7 @@ type
 
     // The version number of this document (it will increase after each
     // change, including undo/redo).
-    version: integer;
+    version: Integer;
 
     // The content of the opened text document.
     text: string;
@@ -3752,7 +3896,7 @@ type
 
     // The version number of this document (it will increase after each
     // change, including undo/redo).
-    version: integer;
+    version: Integer;
 
     // The content of the opened text document.
     text: string;
@@ -3775,7 +3919,8 @@ type
   end;
 
   // An event describing a change to a text document.
-  TLSPTextDocumentContentChangeEvent = class(TLSPBaseTextDocumentContentChangeEvent)
+  TLSPTextDocumentContentChangeEvent = class
+    (TLSPBaseTextDocumentContentChangeEvent)
     // The range of the document that changed.
     range: TLSPRange;
 
@@ -3807,9 +3952,9 @@ type
     // approach:
     // - start with the same initial content
     // - apply the 'textDocument/didChange' notifications in the order you
-    //   receive them.
+    // receive them.
     // - apply the `TextDocumentContentChangeEvent`s in a single notification
-    //   in the order you receive them.
+    // in the order you receive them.
     contentChanges: TObjectList<TLSPBaseTextDocumentContentChangeEvent>;
     constructor Create;
     destructor Destroy; override;
@@ -3858,7 +4003,7 @@ type
     textDocument: TLSPTextDocumentIdentifier;
   end;
 
- TLSPExecutionSummary = record
+  TLSPExecutionSummary = record
     // A strict monotonically increasing value
     // indicating the execution order of a cell
     // inside a notebook.
@@ -3880,7 +4025,7 @@ type
     // containing the notebook cell. If a string
     // value is provided it matches against the
     // notebook type. '*' matches every notebook.
-    notebook: string;  // string | NotebookDocumentFilter;
+    notebook: string; // string | NotebookDocumentFilter;
     notebookDocumentFilter: TLSPNotebookDocumentFilter;
 
     // A language id like `python`.
@@ -3921,7 +4066,7 @@ type
   TLSPVersionedNotebookDocumentIdentifier = class
   public
     // The version number of this notebook document.
-    version: integer;
+    version: Integer;
 
     // The notebook document's URI.
     uri: TLSPDocumentUri;
@@ -4004,10 +4149,10 @@ type
 
     // The version number of this document (it will increase after each
     // change, including undo/redo).
-    version: integer;
+    version: Integer;
 
     // Additional metadata stored with the notebook document.
-    metadata: Variant;  { metadata: LSPObject }
+    metadata: Variant; { metadata: LSPObject }
 
     // The cells of a notebook.
     cells: TArray<TLSPNotebookCell>;
@@ -4063,8 +4208,8 @@ type
     // following approach:
     // - start with the same initial content
     // - apply the 'notebookDocument/didChange' notifications in the order
-    //   you receive them.
-    change: TLSPNotebookDocumentChangeEvent;
+    // you receive them.
+    Change: TLSPNotebookDocumentChangeEvent;
     constructor Create;
     destructor Destroy; override;
   end;
@@ -4120,7 +4265,7 @@ type
     position: TLSPPosition;
   end;
 
-    TLSPMarkupContent = record
+  TLSPMarkupContent = record
     // The type of the Markup. MarkupKind = 'plaintext' | 'markdown';
     kind: TLSPMarkupKind;
 
@@ -4129,21 +4274,22 @@ type
   end;
 
   // Completion was triggered by typing an identifier (24x7 code
-	// complete), manual invocation (e.g Ctrl+Space) or via API.
+  // complete), manual invocation (e.g Ctrl+Space) or via API.
   //
-	// const Invoked: 1 = 1;
+  // const Invoked: 1 = 1;
   //
-	// Completion was triggered by a trigger character specified by
-	// the `triggerCharacters` properties of the
-	// `CompletionRegistrationOptions`.
+  // Completion was triggered by a trigger character specified by
+  // the `triggerCharacters` properties of the
+  // `CompletionRegistrationOptions`.
   //
-	// const TriggerCharacter: 2 = 2;
+  // const TriggerCharacter: 2 = 2;
   //
-	// Completion was re-triggered as the current completion list is incomplete.
+  // Completion was re-triggered as the current completion list is incomplete.
   //
   // const TriggerForIncompleteCompletions: 3 = 3;
   //
-  TLSPCompletionTriggerKind = Cardinal; // TLSPCompletionTriggerKind = 1 | 2 | 3;
+  TLSPCompletionTriggerKind = Cardinal;
+  // TLSPCompletionTriggerKind = 1 | 2 | 3;
 
   // Contains additional information about the context in which a completion
   // request is triggered.
@@ -4162,7 +4308,7 @@ type
   TLSPCompletionParams = class(TLSPTextDocumentPositionParams)
     // WorkDoneProgressParams, PartialResultParams
     // An optional token that a server can use to report work done progress.
-     workDoneToken: TLSPProgressToken;
+    workDoneToken: TLSPProgressToken;
 
     // The completion context. This is only available if the client specifies
     // to send this using the client capability
@@ -4170,14 +4316,18 @@ type
     context: TLSPCompletionContext;
 
     // An optional token that a server can use to report partial results (e.g.
-	  // streaming) to the client.
+    // streaming) to the client.
     partialResultToken: TLSPProgressToken;
   end;
 
   TLSPInsertTextFormats = record
-    const plainText = 1;
-    const snippet = 2;
+  const
+    plainText = 1;
+
+  const
+    snippet = 2;
   end;
+
   // Defines whether the insert text in a completion item should be interpreted as
   // plain text or a snippet.
   //
@@ -4208,7 +4358,7 @@ type
   TLSPCompletionInsertReplaceEdit = record
     // This record combine TLSPTextEdit + TLSPInsertReplaceEdit
     // A boolean to inform us if a TLSPInsertReplaceEdit object was found
-    insertReplaceEdit: Boolean;
+    insertReplaceEdit: boolean;
 
     // The string to be inserted.
     newText: string;
@@ -4248,7 +4398,7 @@ type
     // For private use only. You can use this flag in your own code to find out
     // if the completion item comes from OnCompletion or OnCompletionResolve.
     [DISABLE]
-    resolved: Boolean;
+    resolved: boolean;
 
     // The label of this completion item. By default
     // also the text that is inserted when selecting
@@ -4256,7 +4406,7 @@ type
     [ALIAS('label')]
     slabel: string;
 
-    //Additional details for the label
+    // Additional details for the label
     //
     // @since 3.17.0
     //
@@ -4391,40 +4541,40 @@ type
     destructor Destroy; override;
   end;
 
-	// @since 3.17.0
-	TLSPCompletionItemDefaults = class
-	public
-		// A default commit character set.
+  // @since 3.17.0
+  TLSPCompletionItemDefaults = class
+  public
+    // A default commit character set.
     //
-		// @since 3.17.0
+    // @since 3.17.0
     //
-		commitCharacters: TArray<string>;
+    commitCharacters: TArray<string>;
 
-		// A default edit range
+    // A default edit range
     //
-		// @since 3.17.0
+    // @since 3.17.0
     //
     // editRange: Range | { insert: Range; replace: Range; }
     //
-		editRange: TLSPTextEdit; // TLSPTextEdit | TLSPInsertReplaceEdit
+    editRange: TLSPTextEdit; // TLSPTextEdit | TLSPInsertReplaceEdit
 
-		// A default insert text format
+    // A default insert text format
     //
-		// @since 3.17.0
+    // @since 3.17.0
     //
-		insertTextFormat: TLSPInsertTextFormat;
+    insertTextFormat: TLSPInsertTextFormat;
 
-		// A default insert text mode
+    // A default insert text mode
     //
-		// @since 3.17.0
+    // @since 3.17.0
     //
-		insertTextMode: TLSPInsertTextMode;
+    insertTextMode: TLSPInsertTextMode;
 
-		// A default data value.
+    // A default data value.
     //
-		// @since 3.17.0
+    // @since 3.17.0
     //
-		data: Variant; // LSPAny;
+    data: Variant; // LSPAny;
     destructor Destroy; override;
   end;
 
@@ -4476,7 +4626,8 @@ type
   TLSPHover = class(TLSPBaseParams)
   public
     // The hover's content
-    contents: TLSPMarkupContent;  // MarkedString | MarkedString[] | MarkupContent;
+    contents: TLSPMarkupContent;
+    // MarkedString | MarkedString[] | MarkupContent;
     [DISABLE]
     contentsMarked: TLSPMarkedString;
     [DISABLE]
@@ -4498,7 +4649,7 @@ type
     // *Note*: a label of type string should be a substring of its containing
     // signature label. Its intended use case is to highlight the parameter
     // label part in the `SignatureInformation.label`.
-    [ALIAS('label')]
+  [ALIAS('label')]
     slabel: string; // string | [uinteger, uinteger];
 
     // The human-readable doc-comment of this parameter. Will be shown
@@ -4509,7 +4660,7 @@ type
   TLSPSignatureInformation = record
     // The label of this signature. Will be shown in
     // the UI.
-    [ALIAS('label')]
+  [ALIAS('label')]
     slabel: string;
 
     // The human-readable doc-comment of this signature. Will be shown
@@ -4601,8 +4752,8 @@ type
   TLSPDeclarationParams = class(TLSPTextDocumentPositionParams)
   public
     // An optional token that a server can use to report partial results (e.g.
-	  // streaming) to the client.
-	  partialResultToken: TLSPProgressToken;
+    // streaming) to the client.
+    partialResultToken: TLSPProgressToken;
 
     // An optional token that a server can use to report work done progress.
     workDoneToken: TLSPProgressToken;
@@ -4611,8 +4762,8 @@ type
   TLSPDefinitionParams = class(TLSPTextDocumentPositionParams)
   public
     // An optional token that a server can use to report partial results (e.g.
-	  // streaming) to the client.
-	  partialResultToken: TLSPProgressToken;
+    // streaming) to the client.
+    partialResultToken: TLSPProgressToken;
 
     // An optional token that a server can use to report work done progress.
     workDoneToken: TLSPProgressToken;
@@ -4621,8 +4772,8 @@ type
   TLSPImplmentationParams = class(TLSPTextDocumentPositionParams)
   public
     // An optional token that a server can use to report partial results (e.g.
-	  // streaming) to the client.
-	  partialResultToken: TLSPProgressToken;
+    // streaming) to the client.
+    partialResultToken: TLSPProgressToken;
 
     // An optional token that a server can use to report work done progress.
     workDoneToken: TLSPProgressToken;
@@ -4631,8 +4782,8 @@ type
   TLSPTypeDefinitionParams = class(TLSPTextDocumentPositionParams)
   public
     // An optional token that a server can use to report partial results (e.g.
-	  // streaming) to the client.
-	  partialResultToken: TLSPProgressToken;
+    // streaming) to the client.
+    partialResultToken: TLSPProgressToken;
 
     // An optional token that a server can use to report work done progress.
     workDoneToken: TLSPProgressToken;
@@ -4656,8 +4807,8 @@ type
     context: TLSPReferenceContext;
 
     // An optional token that a server can use to report partial results (e.g.
-	  // streaming) to the client.
-	  partialResultToken: TLSPProgressToken;
+    // streaming) to the client.
+    partialResultToken: TLSPProgressToken;
 
     // An optional token that a server can use to report work done progress.
     workDoneToken: TLSPProgressToken;
@@ -4671,8 +4822,8 @@ type
   TLSPDocumentHighlightParams = class(TLSPTextDocumentPositionParams)
   public
     // An optional token that a server can use to report partial results (e.g.
-	  // streaming) to the client.
-	  partialResultToken: TLSPProgressToken;
+    // streaming) to the client.
+    partialResultToken: TLSPProgressToken;
 
     // An optional token that a server can use to report work done progress.
     workDoneToken: TLSPProgressToken;
@@ -4686,7 +4837,7 @@ type
   // Read-access of a symbol, like reading a variable.
   // const Read = 2;
   //
-	// Write-access of a symbol, like writing to a variable.
+  // Write-access of a symbol, like writing to a variable.
   // const Write = 3;
   //
   TLSPDocumentHighlightKind = Cardinal; // 1 | 2 | 3;
@@ -4713,17 +4864,17 @@ type
     textDocument: TLSPTextDocumentIdentifier;
 
     // An optional token that a server can use to report partial results (e.g.
-	  // streaming) to the client.
-	  partialResultToken: TLSPProgressToken;
+    // streaming) to the client.
+    partialResultToken: TLSPProgressToken;
 
     // An optional token that a server can use to report work done progress.
     workDoneToken: TLSPProgressToken;
   end;
 
-   // Represents programming constructs like variables, classes, interfaces etc.
-   // that appear in a document. Document symbols can be hierarchical and they
-   // have two ranges: one that encloses its definition and one that points to its
-   // most interesting range, e.g. the range of an identifier.
+  // Represents programming constructs like variables, classes, interfaces etc.
+  // that appear in a document. Document symbols can be hierarchical and they
+  // have two ranges: one that encloses its definition and one that points to its
+  // most interesting range, e.g. the range of an identifier.
   TLSPDocumentSymbol = record
     // The name of this symbol. Will be displayed in the user interface and
     // therefore must not be an empty string or a string only consisting of
@@ -4768,14 +4919,16 @@ type
   //
   TLSPCodeActionTriggerKind = record
   public
-    // Code actions were explicitly requested by the user or by an extension.
-    const Invoked = 1;
+  // Code actions were explicitly requested by the user or by an extension.
+    const
+    Invoked = 1;
 
     // Code actions were requested automatically.
     //
     // This typically happens when current selection in a file changes, but can
     // also be triggered when file content changes.
-    const Automatic = 2;
+  const
+    Automatic = 2;
   end;
 
   TLSPCodeActionContext = record
@@ -4797,7 +4950,8 @@ type
     //
     // @since 3.17.0
     //
-    triggerKind: Integer; // TLSPCodeActionTriggerKind.Invoked | TLSPCodeActionTriggerKind.Automatic
+    triggerKind: Integer;
+    // TLSPCodeActionTriggerKind.Invoked | TLSPCodeActionTriggerKind.Automatic
   end;
 
   TLSPDocumentSymbolsResponse = class(TLSPBaseParams)
@@ -4818,8 +4972,8 @@ type
     context: TLSPCodeActionContext;
 
     // An optional token that a server can use to report partial results (e.g.
-	  // streaming) to the client.
-	  partialResultToken: TLSPProgressToken;
+    // streaming) to the client.
+    partialResultToken: TLSPProgressToken;
 
     // An optional token that a server can use to report work done progress.
     workDoneToken: TLSPProgressToken;
@@ -4868,15 +5022,15 @@ type
     // actions:
     //
     // - Disabled code actions are not shown in automatic lightbulbs code
-    //   action menus.
+    // action menus.
     //
     // - Disabled actions are shown as faded out in the code action menu when
-    //   the user request a more specific type of code action, such as
-    //   refactorings.
+    // the user request a more specific type of code action, such as
+    // refactorings.
     //
     // - If the user has a keybinding that auto applies a code action and only
-    //   a disabled code actions are returned, the client should show the user
-    //   an error message with `reason` in the editor.
+    // a disabled code actions are returned, the client should show the user
+    // an error message with `reason` in the editor.
     //
     // @since 3.16.0
     //
@@ -4911,8 +5065,8 @@ type
     textDocument: TLSPTextDocumentIdentifier;
 
     // An optional token that a server can use to report partial results (e.g.
-	  // streaming) to the client.
-	  partialResultToken: TLSPProgressToken;
+    // streaming) to the client.
+    partialResultToken: TLSPProgressToken;
 
     // An optional token that a server can use to report work done progress.
     workDoneToken: TLSPProgressToken;
@@ -4951,8 +5105,8 @@ type
     textDocument: TLSPTextDocumentIdentifier;
 
     // An optional token that a server can use to report partial results (e.g.
-	  // streaming) to the client.
-	  partialResultToken: TLSPProgressToken;
+    // streaming) to the client.
+    partialResultToken: TLSPProgressToken;
 
     // An optional token that a server can use to report work done progress.
     workDoneToken: TLSPProgressToken;
@@ -4997,8 +5151,8 @@ type
     textDocument: TLSPTextDocumentIdentifier;
 
     // An optional token that a server can use to report partial results (e.g.
-	  // streaming) to the client.
-	  partialResultToken: TLSPProgressToken;
+    // streaming) to the client.
+    partialResultToken: TLSPProgressToken;
 
     // An optional token that a server can use to report work done progress.
     workDoneToken: TLSPProgressToken;
@@ -5044,8 +5198,8 @@ type
     range: TLSPRange;
 
     // An optional token that a server can use to report partial results (e.g.
-	  // streaming) to the client.
-	  partialResultToken: TLSPProgressToken;
+    // streaming) to the client.
+    partialResultToken: TLSPProgressToken;
 
     // An optional token that a server can use to report work done progress.
     workDoneToken: TLSPProgressToken;
@@ -5278,7 +5432,7 @@ type
 
     // If { defaultBehavior: boolean } is returned (since 3.16) the rename position is
     // valid and the client should use its default behavior to compute the rename range.
-    defaultBehavior: Boolean;
+    defaultBehavior: boolean;
   end;
 
   // Folding Range Requests
@@ -5289,8 +5443,8 @@ type
     textDocument: TLSPTextDocumentIdentifier;
 
     // An optional token that a server can use to report partial results (e.g.
-	  // streaming) to the client.
-	  partialResultToken: TLSPProgressToken;
+    // streaming) to the client.
+    partialResultToken: TLSPProgressToken;
 
     // An optional token that a server can use to report work done progress.
     workDoneToken: TLSPProgressToken;
@@ -5349,8 +5503,8 @@ type
     positions: TArray<TLSPPosition>;
 
     // An optional token that a server can use to report partial results (e.g.
-	  // streaming) to the client.
-	  partialResultToken: TLSPProgressToken;
+    // streaming) to the client.
+    partialResultToken: TLSPProgressToken;
 
     // An optional token that a server can use to report work done progress.
     workDoneToken: TLSPProgressToken;
@@ -5421,8 +5575,8 @@ type
     item: TLSPCallHierarchyItem;
 
     // An optional token that a server can use to report partial results (e.g.
-	  // streaming) to the client.
-	  partialResultToken: TLSPProgressToken;
+    // streaming) to the client.
+    partialResultToken: TLSPProgressToken;
 
     // An optional token that a server can use to report work done progress.
     workDoneToken: TLSPProgressToken;
@@ -5430,7 +5584,7 @@ type
 
   TLSPCallHierarchyIncomingCall = record
     // The item that makes the call.
-    [ALIAS('from')]
+  [ALIAS('from')]
     callFrom: TLSPCallHierarchyItem;
 
     // The ranges at which the calls appear. This is relative to the caller
@@ -5448,8 +5602,8 @@ type
     item: TLSPCallHierarchyItem;
 
     // An optional token that a server can use to report partial results (e.g.
-	  // streaming) to the client.
-	  partialResultToken: TLSPProgressToken;
+    // streaming) to the client.
+    partialResultToken: TLSPProgressToken;
 
     // An optional token that a server can use to report work done progress.
     workDoneToken: TLSPProgressToken;
@@ -5457,7 +5611,7 @@ type
 
   TLSPCallHierarchyOutgoingCall = record
     // The item that is called.
-    [ALIAS('to')]
+  [ALIAS('to')]
     callTo: TLSPCallHierarchyItem;
 
     // The range at which this item is called. This is the range relative to
@@ -5519,8 +5673,8 @@ type
     item: TLSPTypeHierarchyItem;
 
     // An optional token that a server can use to report partial results (e.g.
-	  // streaming) to the client.
-	  partialResultToken: TLSPProgressToken;
+    // streaming) to the client.
+    partialResultToken: TLSPProgressToken;
 
     // An optional token that a server can use to report work done progress.
     workDoneToken: TLSPProgressToken;
@@ -5531,8 +5685,8 @@ type
     item: TLSPTypeHierarchyItem;
 
     // An optional token that a server can use to report partial results (e.g.
-	  // streaming) to the client.
-	  partialResultToken: TLSPProgressToken;
+    // streaming) to the client.
+    partialResultToken: TLSPProgressToken;
 
     // An optional token that a server can use to report work done progress.
     workDoneToken: TLSPProgressToken;
@@ -5546,8 +5700,8 @@ type
     textDocument: TLSPTextDocumentIdentifier;
 
     // An optional token that a server can use to report partial results (e.g.
-	  // streaming) to the client.
-	  partialResultToken: TLSPProgressToken;
+    // streaming) to the client.
+    partialResultToken: TLSPProgressToken;
 
     // An optional token that a server can use to report work done progress.
     workDoneToken: TLSPProgressToken;
@@ -5580,8 +5734,8 @@ type
     previousResultId: string;
 
     // An optional token that a server can use to report partial results (e.g.
-	  // streaming) to the client.
-	  partialResultToken: TLSPProgressToken;
+    // streaming) to the client.
+    partialResultToken: TLSPProgressToken;
 
     // An optional token that a server can use to report work done progress.
     workDoneToken: TLSPProgressToken;
@@ -5621,8 +5775,8 @@ type
     range: TLSPRange;
 
     // An optional token that a server can use to report partial results (e.g.
-	  // streaming) to the client.
-	  partialResultToken: TLSPProgressToken;
+    // streaming) to the client.
+    partialResultToken: TLSPProgressToken;
 
     // An optional token that a server can use to report work done progress.
     workDoneToken: TLSPProgressToken;
@@ -5650,7 +5804,7 @@ type
     // The tooltip text when you hover over this label part. Depending on
     // the client capability `inlayHint.resolveSupport` clients might resolve
     // this property late using the resolve request.
-    tooltip: TLSPMarkupContent;   // tooltip?: string | MarkupContent;
+    tooltip: TLSPMarkupContent; // tooltip?: string | MarkupContent;
 
     // An optional source code location that represents this
     // label part.
@@ -5687,7 +5841,8 @@ type
     // *Note* that neither the string nor the label part can be empty.
     //
     [ALIAS('label')]
-    labelParts: TArray<TLSPInlayHintLabelPart>;  // label: string | InlayHintLabelPart[];
+    labelParts: TArray<TLSPInlayHintLabelPart>;
+    // label: string | InlayHintLabelPart[];
 
     // The kind of this hint. Can be omitted in which case the client
     // should fall back to a reasonable default.
@@ -5738,7 +5893,7 @@ type
   TLSPInlineValueContext = record
   public
     // The stack frame (as a DAP Id) where the execution has stopped.
-    frameId: integer;
+    frameId: Integer;
 
     // The document range where execution has stopped.
     // Typically the end position of the range denotes the line where the
@@ -5847,8 +6002,8 @@ type
   TLSPMonikerParams = class(TLSPTextDocumentPositionParams)
   public
     // An optional token that a server can use to report partial results (e.g.
-	  // streaming) to the client.
-	  partialResultToken: TLSPProgressToken;
+    // streaming) to the client.
+    partialResultToken: TLSPProgressToken;
 
     // An optional token that a server can use to report work done progress.
     workDoneToken: TLSPProgressToken;
@@ -5868,7 +6023,7 @@ type
   // import - The moniker represent a symbol that is imported into a project
   // export - The moniker represents a symbol that is exported from a project
   // local  - The moniker represents a symbol that is local to a project (e.g. a local
-  //          variable of a function, a class not visible outside the project, ...)
+  // variable of a function, a class not visible outside the project, ...)
   TLSPMonikerKind = string;
 
   // Moniker definition to match LSIF 0.5 moniker definition.
@@ -5892,126 +6047,81 @@ type
     monikers: TArray<TLSPMoniker>;
   end;
 
-
-  TLSPKind = (lspInitialize,lspInitialized,lspShutdown,lspExit,
-            lspShowMessage,lspShowMessageRequest,lspShowDocumentRequest,lspLogMessage,
-            lspWorkDoneProgress,lspWorkDoneProgressCancel,
-            lspTelemetryEvent,
-            lspClientRegisterCapabilities,lspClientUnRegisterCapabilities,
-            lspWorkspaceFolders,lspDidChangeWorkspaceFolders,lspDidChangeConfiguration,
-            lspWorkspaceConfiguration,lspDidChangeWatchedFiles,lspWorkspaceSymbol,lspWorkspaceExecuteCommand,
-            lspWorkspaceApplyEdit,lspWorkspaceWillCreateFiles,lspWorkspaceDidCreateFiles,
-            lspWorkspaceWillRenameFiles,lspWorkspaceDidRenameFiles,lspWorkspaceWillDeleteFiles,lspWorkspaceDidDeleteFiles,
-            lspDidOpenTextDocument,lspDidChangeTextDocument,lspWillSaveTextDocument,lspWillSaveWaitUntilTextDocument,
-            lspDidSaveTextDocument,lspDidCloseTextDocument,
-            lspPublishDiagnostics,
-            lspCompletion,lspCompletionItemResolve,lspHover,lspSignatureHelp,
-            lspGotoDeclaration,lspGotoDefinition,lspGotoTypeDefinition,lspGotoImplementation,
-            lspDocumentHighlight,lspDocumentSymbol,lspReferences,
-            lspCodeAction,lspCodeActionResolve,lspCodeLens,lspCodeLensResolve,lspCodeLensRefresh,
-            lspDocumentLink,lspDocumentLinkResolve,lspDocumentColor,lspColorPresentation,
-            lspDocumentFormatting,lspDocumentRangeFormatting,lspDocumentOnTypeFormatting,
-            lspRename,lspPrepareRename,lspFoldingRange,lspSelectionRange,
-            lspPrepareCallHierarchy,lspCallHierarchyIncommingCalls,lspCallHierarchyOutgoingCalls,
-            lspPrepareTypeHierarchy,lspTypeHierarchySupertypes,lspTypeHierarchySubtypes,
-            lspSemanticTokensFull,lspSemanticTokensFullDelta,lspSemanticTokensRange,lspSemanticTokensRefresh,
-            lspLinkedEditingRange,lspMoniker,lspInlayHint,lspInlayHintResolve,lspInlayHintRefresh,
-            lspInlineValue,lspInlineValueRefresh,lspDocumentDiagnostic,lspWorkspaceDiagnostic,lspWorkspaceDiagnosticRefresh,
-            lspDidOpenNotebookDocument,lspDidChangeNotebookDocument,lspDidSaveNotebookDocument,lspDidCloseNotebookDocument,
-            lspCancelRequest,lspProgress,lspLogTrace,lspSetTrace,lspError);
+  TLSPKind = (lspInitialize, lspInitialized, lspShutdown, lspExit,
+    lspShowMessage, lspShowMessageRequest, lspShowDocumentRequest,
+    lspLogMessage, lspWorkDoneProgress, lspWorkDoneProgressCancel,
+    lspTelemetryEvent, lspClientRegisterCapabilities,
+    lspClientUnRegisterCapabilities, lspWorkspaceFolders,
+    lspDidChangeWorkspaceFolders, lspDidChangeConfiguration,
+    lspWorkspaceConfiguration, lspDidChangeWatchedFiles, lspWorkspaceSymbol,
+    lspWorkspaceExecuteCommand, lspWorkspaceApplyEdit,
+    lspWorkspaceWillCreateFiles, lspWorkspaceDidCreateFiles,
+    lspWorkspaceWillRenameFiles, lspWorkspaceDidRenameFiles,
+    lspWorkspaceWillDeleteFiles, lspWorkspaceDidDeleteFiles,
+    lspDidOpenTextDocument, lspDidChangeTextDocument, lspWillSaveTextDocument,
+    lspWillSaveWaitUntilTextDocument, lspDidSaveTextDocument,
+    lspDidCloseTextDocument, lspPublishDiagnostics, lspCompletion,
+    lspCompletionItemResolve, lspHover, lspSignatureHelp, lspGotoDeclaration,
+    lspGotoDefinition, lspGotoTypeDefinition, lspGotoImplementation,
+    lspDocumentHighlight, lspDocumentSymbol, lspReferences, lspCodeAction,
+    lspCodeActionResolve, lspCodeLens, lspCodeLensResolve, lspCodeLensRefresh,
+    lspDocumentLink, lspDocumentLinkResolve, lspDocumentColor,
+    lspColorPresentation, lspDocumentFormatting, lspDocumentRangeFormatting,
+    lspDocumentOnTypeFormatting, lspRename, lspPrepareRename, lspFoldingRange,
+    lspSelectionRange, lspPrepareCallHierarchy, lspCallHierarchyIncommingCalls,
+    lspCallHierarchyOutgoingCalls, lspPrepareTypeHierarchy,
+    lspTypeHierarchySupertypes, lspTypeHierarchySubtypes, lspSemanticTokensFull,
+    lspSemanticTokensFullDelta, lspSemanticTokensRange,
+    lspSemanticTokensRefresh, lspLinkedEditingRange, lspMoniker, lspInlayHint,
+    lspInlayHintResolve, lspInlayHintRefresh, lspInlineValue,
+    lspInlineValueRefresh, lspDocumentDiagnostic, lspWorkspaceDiagnostic,
+    lspWorkspaceDiagnosticRefresh, lspDidOpenNotebookDocument,
+    lspDidChangeNotebookDocument, lspDidSaveNotebookDocument,
+    lspDidCloseNotebookDocument, lspCancelRequest, lspProgress, lspLogTrace,
+    lspSetTrace, lspError);
 
 const
-  LSPIdStrings : array[0..88] of String = (
-    'initialize',
-    'initialized',
-    'shutdown',
-    'exit',
-    'window/ShowMessage',
-    'window/showMessageRequest',
-    'window/showDocument',
-    'window/logMessage',
-    'window/workDoneProgress/create',
-    'window/workDoneProgress/cancel',
-    'telemetry/event',
-    'client/registerCapability',
-    'client/unregisterCapability',
-    'workspace/workspaceFolders',
-    'workspace/didChangeWorkspaceFolders',
-    'workspace/didChangeConfiguration',
-    'workspace/configuration',
-    'workspace/didChangeWatchedFiles',
-    'workspace/symbol',
-    'workspace/executeCommand',
-    'workspace/applyEdit',
-    'workspace/willCreateFiles',
-    'workspace/didCreateFiles',
-    'workspace/willRenameFiles',
-    'workspace/didRenameFiles',
-    'workspace/willDeleteFiles',
-    'workspace/didDeleteFiles',
-    'textDocument/didOpen',
-    'textDocument/didChange',
-    'textDocument/willSave',
-    'textDocument/willSaveWaitUntil',
-    'textDocument/didSave',
-    'textDocument/didClose',
-    'textDocument/publishDiagnostics',
-    'textDocument/completion',
-    'completionItem/resolve',
-    'textDocument/hover',
-    'textDocument/signatureHelp',
-    'textDocument/declaration',
-    'textDocument/definition',
-    'textDocument/typeDefinition',
-    'textDocument/implementation',
-    'textDocument/documentHighlight',
-    'textDocument/documentSymbol',
-    'textDocument/references',
-    'textDocument/codeAction',
-    'CodeAction/resolve',
-    'textDocument/codeLens',
-    'codeLens/resolve',
-    'workspace/codeLens/refresh',
-    'textDocument/documentLink',
-    'documentLink/resolve',
-    'textDocument/documentColor',
-    'textDocument/colorPresentation',
-    'textDocument/formatting',
-    'textDocument/rangeFormatting',
-    'textDocument/onTypeFormatting',
-    'textDocument/rename',
-    'textDocument/prepareRename',
-    'textDocument/foldingRange',
-    'textDocument/selectionRange',
-    'textDocument/prepareCallHierarchy',
-    'callHierarchy/incomingCalls',
-    'callHierarchy/outgoingCalls',
-    'textDocument/prepareTypeHierarchy',
-    'typeHierarchy/supertypes',
-    'typeHierarchy/subtypes',
-    'textDocument/semanticTokens/full',
+  LSPIdStrings: array [0 .. 88] of String = ('initialize', 'initialized',
+    'shutdown', 'exit', 'window/ShowMessage', 'window/showMessageRequest',
+    'window/showDocument', 'window/logMessage',
+    'window/workDoneProgress/create', 'window/workDoneProgress/cancel',
+    'telemetry/event', 'client/registerCapability',
+    'client/unregisterCapability', 'workspace/workspaceFolders',
+    'workspace/didChangeWorkspaceFolders', 'workspace/didChangeConfiguration',
+    'workspace/configuration', 'workspace/didChangeWatchedFiles',
+    'workspace/symbol', 'workspace/executeCommand', 'workspace/applyEdit',
+    'workspace/willCreateFiles', 'workspace/didCreateFiles',
+    'workspace/willRenameFiles', 'workspace/didRenameFiles',
+    'workspace/willDeleteFiles', 'workspace/didDeleteFiles',
+    'textDocument/didOpen', 'textDocument/didChange', 'textDocument/willSave',
+    'textDocument/willSaveWaitUntil', 'textDocument/didSave',
+    'textDocument/didClose', 'textDocument/publishDiagnostics',
+    'textDocument/completion', 'completionItem/resolve', 'textDocument/hover',
+    'textDocument/signatureHelp', 'textDocument/declaration',
+    'textDocument/definition', 'textDocument/typeDefinition',
+    'textDocument/implementation', 'textDocument/documentHighlight',
+    'textDocument/documentSymbol', 'textDocument/references',
+    'textDocument/codeAction', 'CodeAction/resolve', 'textDocument/codeLens',
+    'codeLens/resolve', 'workspace/codeLens/refresh',
+    'textDocument/documentLink', 'documentLink/resolve',
+    'textDocument/documentColor', 'textDocument/colorPresentation',
+    'textDocument/formatting', 'textDocument/rangeFormatting',
+    'textDocument/onTypeFormatting', 'textDocument/rename',
+    'textDocument/prepareRename', 'textDocument/foldingRange',
+    'textDocument/selectionRange', 'textDocument/prepareCallHierarchy',
+    'callHierarchy/incomingCalls', 'callHierarchy/outgoingCalls',
+    'textDocument/prepareTypeHierarchy', 'typeHierarchy/supertypes',
+    'typeHierarchy/subtypes', 'textDocument/semanticTokens/full',
     'textDocument/semanticTokens/full/delta',
-    'textDocument/semanticTokens/range',
-    'workspace/semanticTokens/refresh',
-    'textDocument/linkedEditingRange',
-    'textDocument/moniker',
-    'textDocument/inlayHint',
-    'inlayHint/resolve',
-    'workspace/inlayHint/refresh',
-    'textDocument/inlineValue',
-    'workspace/inlineValue/refresh',
-    'textDocument/diagnostic',
-    'workspace/diagnostic',
-    'workspace/diagnostic/refresh',
-    'notebookDocument/didOpen',
-    'notebookDocument/didChange',
-    'notebookDocument/didSave',
-    'notebookDocument/didClose',
-    '$/cancelRequest',
-    '$/progress',
-    '$/logTrace',
-    '$/setTrace'
-  );
+    'textDocument/semanticTokens/range', 'workspace/semanticTokens/refresh',
+    'textDocument/linkedEditingRange', 'textDocument/moniker',
+    'textDocument/inlayHint', 'inlayHint/resolve',
+    'workspace/inlayHint/refresh', 'textDocument/inlineValue',
+    'workspace/inlineValue/refresh', 'textDocument/diagnostic',
+    'workspace/diagnostic', 'workspace/diagnostic/refresh',
+    'notebookDocument/didOpen', 'notebookDocument/didChange',
+    'notebookDocument/didSave', 'notebookDocument/didClose', '$/cancelRequest',
+    '$/progress', '$/logTrace', '$/setTrace');
 
 type
 
@@ -6046,7 +6156,7 @@ end;
 
 destructor TLSPInitializeParams.Destroy;
 begin
-  SetLength(workspaceFolders,0);
+  SetLength(workspaceFolders, 0);
   FreeAndNil(clientInfo);
   FreeAndNil(capabilities);
   inherited;
@@ -6064,7 +6174,7 @@ var
   s: string;
 begin
   // Set workspace folders
-  SetLength(workspaceFolders,ls.Count);
+  SetLength(workspaceFolders, ls.Count);
   for i := 0 to ls.Count - 1 do
   begin
     s := ls[i];
@@ -6092,7 +6202,8 @@ begin
   inherited;
 end;
 
-procedure TLSPClientCapabilities.AddCallHierarchySupport(const dynamicRegistration: Boolean);
+procedure TLSPClientCapabilities.AddCallHierarchySupport
+  (const dynamicRegistration: boolean);
 begin
   // textDocument
   if not Assigned(textDocument) then
@@ -6103,9 +6214,10 @@ begin
   textDocument.callHierarchy.dynamicRegistration := dynamicRegistration;
 end;
 
-procedure TLSPClientCapabilities.AddCodeActionSupport(const dynamicRegistration, isPreferredSupport, disabledSupport,
-    dataSupport, honorsChangeAnnotations: Boolean; const codeActions: TArray<String> = nil; const resolveProperties:
-    TArray<String> = nil);
+procedure TLSPClientCapabilities.AddCodeActionSupport(const dynamicRegistration,
+  isPreferredSupport, disabledSupport, dataSupport, honorsChangeAnnotations
+  : boolean; const codeActions: TArray<String> = nil;
+  const resolveProperties: TArray<String> = nil);
 begin
   // textDocument
   if not Assigned(textDocument) then
@@ -6121,19 +6233,24 @@ begin
 
   if Assigned(codeActions) then
   begin
-    textDocument.codeAction.codeActionLiteralSupport := TLSPCodeActionLiteralSupport.Create;
-    textDocument.codeAction.codeActionLiteralSupport.codeActionKind := TLSPCodeActionKindValues.Create;
-    textDocument.codeAction.codeActionLiteralSupport.codeActionKind.valueSet := Copy(codeActions);
+    textDocument.codeAction.codeActionLiteralSupport :=
+      TLSPCodeActionLiteralSupport.Create;
+    textDocument.codeAction.codeActionLiteralSupport.codeActionKind :=
+      TLSPCodeActionKindValues.Create;
+    textDocument.codeAction.codeActionLiteralSupport.codeActionKind.valueSet :=
+      Copy(codeActions);
   end;
 
   if Assigned(resolveProperties) then
   begin
     textDocument.codeAction.resolveSupport := TLSPResolveSupport.Create;
-    textDocument.codeAction.resolveSupport.properties := Copy(resolveProperties);
+    textDocument.codeAction.resolveSupport.properties :=
+      Copy(resolveProperties);
   end;
 end;
 
-procedure TLSPClientCapabilities.AddCodeLensSupport(const dynamicRegistration: Boolean);
+procedure TLSPClientCapabilities.AddCodeLensSupport(const dynamicRegistration
+  : boolean);
 begin
   // textDocument
   if not Assigned(textDocument) then
@@ -6144,7 +6261,8 @@ begin
   textDocument.codeLens.dynamicRegistration := dynamicRegistration;
 end;
 
-procedure TLSPClientCapabilities.AddColorProvider(const dynamicRegistration: Boolean);
+procedure TLSPClientCapabilities.AddColorProvider(const dynamicRegistration
+  : boolean);
 begin
   // textDocument
   if not Assigned(textDocument) then
@@ -6155,11 +6273,14 @@ begin
   textDocument.colorProvider.dynamicRegistration := dynamicRegistration;
 end;
 
-procedure TLSPClientCapabilities.AddCompletionSupport(const dynamicRegistration, snippetSupport,
-    commitCharactersSupport, documentationFormatPlainText, documentationFormatMarkdown, deprecatedSupport,
-    preselectSupport, insertReplaceSupport, contextSupport: Boolean; const completionItemKindValues: TArray<Integer> =
-    nil; const resolveSuppert: TArray<String> = nil; const insertTextModeSupportValues: TArray<TLSPInsertTextMode> =
-    nil; const tagSupport: TLSPtagSupportValues = nil);
+procedure TLSPClientCapabilities.AddCompletionSupport(const dynamicRegistration,
+  snippetSupport, commitCharactersSupport, documentationFormatPlainText,
+  documentationFormatMarkdown, deprecatedSupport, preselectSupport,
+  insertReplaceSupport, contextSupport: boolean;
+  const completionItemKindValues: TArray<Integer> = nil;
+  const resolveSuppert: TArray<String> = nil;
+  const insertTextModeSupportValues: TArray<TLSPInsertTextMode> = nil;
+  const tagSupport: TLSPTagSupportValues = nil);
 begin
   // textDocument
   if not Assigned(textDocument) then
@@ -6171,15 +6292,18 @@ begin
   // Capabilities/textDocument/completion/completionItem
   textDocument.completion.completionItem := TLSPClientCompletionItem.Create;
   textDocument.completion.completionItem.snippetSupport := snippetSupport;
-  textDocument.completion.completionItem.commitCharactersSupport := commitCharactersSupport;
+  textDocument.completion.completionItem.commitCharactersSupport :=
+    commitCharactersSupport;
   textDocument.completion.completionItem.deprecatedSupport := deprecatedSupport;
   textDocument.completion.completionItem.preselectSupport := preselectSupport;
-  textDocument.completion.completionItem.insertReplaceSupport := insertReplaceSupport;
+  textDocument.completion.completionItem.insertReplaceSupport :=
+    insertReplaceSupport;
 
   if documentationFormatPlainText and documentationFormatMarkdown then
   begin
     SetLength(textDocument.completion.completionItem.documentationFormat, 2);
-    textDocument.completion.completionItem.documentationFormat := ['plaintext','markdown'];
+    textDocument.completion.completionItem.documentationFormat :=
+      ['plaintext', 'markdown'];
   end
   else if documentationFormatPlainText then
   begin
@@ -6195,57 +6319,53 @@ begin
   // Capabilities/textDocument/completion/completionItem/resolveSupport
   if Assigned(resolveSuppert) then
   begin
-    textDocument.completion.completionItem.resolveSupport := TLSPResolveSupport.Create;
-    textDocument.completion.completionItem.resolveSupport.properties := Copy(resolveSuppert);
+    textDocument.completion.completionItem.resolveSupport :=
+      TLSPResolveSupport.Create;
+    textDocument.completion.completionItem.resolveSupport.properties :=
+      Copy(resolveSuppert);
   end;
 
   // Capabilities/textDocument/completion/completionItem/insertTextModeSupport
   if Assigned(insertTextModeSupportValues) then
   begin
-    textDocument.completion.completionItem.insertTextModeSupport := TLSPInsertTextModeSupport.Create;
-    textDocument.completion.completionItem.insertTextModeSupport.valueSet := Copy(insertTextModeSupportValues);
+    textDocument.completion.completionItem.insertTextModeSupport :=
+      TLSPInsertTextModeSupport.Create;
+    textDocument.completion.completionItem.insertTextModeSupport.valueSet :=
+      Copy(insertTextModeSupportValues);
   end;
 
   // Capabilities/textDocument/completion/completionItemKind
-  textDocument.completion.completionItemKind := TLSPCompletionItemKindValues.Create;
+  textDocument.completion.completionItemKind :=
+    TLSPCompletionItemKindValues.Create;
   if Assigned(completionItemKindValues) then
   begin
-    textDocument.completion.completionItemKind.valueSet := Copy(completionItemKindValues);
+    textDocument.completion.completionItemKind.valueSet :=
+      Copy(completionItemKindValues);
   end
   else
   begin
     SetLength(textDocument.completion.completionItemKind.valueSet, 25);
-    textDocument.completion.completionItemKind.valueSet := [TLSPCompletionItemKind.cText,
-                                                           TLSPCompletionItemKind.cMethod,
-                                                           TLSPCompletionItemKind.cFunction,
-                                                           TLSPCompletionItemKind.cConstructor,
-                                                           TLSPCompletionItemKind.cField,
-                                                           TLSPCompletionItemKind.cVariable,
-                                                           TLSPCompletionItemKind.cClass,
-                                                           TLSPCompletionItemKind.cInterface,
-                                                           TLSPCompletionItemKind.cModule,
-                                                           TLSPCompletionItemKind.cProperty,
-                                                           TLSPCompletionItemKind.cUnit,
-                                                           TLSPCompletionItemKind.cValue,
-                                                           TLSPCompletionItemKind.cEnum,
-                                                           TLSPCompletionItemKind.cKeyword,
-                                                           TLSPCompletionItemKind.cSnippet,
-                                                           TLSPCompletionItemKind.cColor,
-                                                           TLSPCompletionItemKind.cFile,
-                                                           TLSPCompletionItemKind.cReference,
-                                                           TLSPCompletionItemKind.cFolder,
-                                                           TLSPCompletionItemKind.cEnumMember,
-                                                           TLSPCompletionItemKind.cConstant,
-                                                           TLSPCompletionItemKind.cStruct,
-                                                           TLSPCompletionItemKind.cEvent,
-                                                           TLSPCompletionItemKind.cOperator,
-                                                           TLSPCompletionItemKind.cTypeParameter];
+    textDocument.completion.completionItemKind.valueSet :=
+      [TLSPCompletionItemKind.cText, TLSPCompletionItemKind.cMethod,
+      TLSPCompletionItemKind.cFunction, TLSPCompletionItemKind.cConstructor,
+      TLSPCompletionItemKind.cField, TLSPCompletionItemKind.cVariable,
+      TLSPCompletionItemKind.cClass, TLSPCompletionItemKind.cInterface,
+      TLSPCompletionItemKind.cModule, TLSPCompletionItemKind.cProperty,
+      TLSPCompletionItemKind.cUnit, TLSPCompletionItemKind.cValue,
+      TLSPCompletionItemKind.cEnum, TLSPCompletionItemKind.cKeyword,
+      TLSPCompletionItemKind.cSnippet, TLSPCompletionItemKind.cColor,
+      TLSPCompletionItemKind.cFile, TLSPCompletionItemKind.cReference,
+      TLSPCompletionItemKind.cFolder, TLSPCompletionItemKind.cEnumMember,
+      TLSPCompletionItemKind.cConstant, TLSPCompletionItemKind.cStruct,
+      TLSPCompletionItemKind.cEvent, TLSPCompletionItemKind.cOperator,
+      TLSPCompletionItemKind.cTypeParameter];
   end;
 
   textDocument.completion.contextSupport := contextSupport;
 end;
 
-procedure TLSPClientCapabilities.AddDeclarationSupport(const bLinkSupport: Boolean = False);
+procedure TLSPClientCapabilities.AddDeclarationSupport(const bLinkSupport
+  : boolean = False);
 begin
   // textDocument
   if not Assigned(textDocument) then
@@ -6256,7 +6376,8 @@ begin
   textDocument.declaration.linkSupport := bLinkSupport;
 end;
 
-procedure TLSPClientCapabilities.AddDefinitionSupport(const bLinkSupport: Boolean = False);
+procedure TLSPClientCapabilities.AddDefinitionSupport(const bLinkSupport
+  : boolean = False);
 begin
   // textDocument
   if not Assigned(textDocument) then
@@ -6267,7 +6388,8 @@ begin
   textDocument.definition.linkSupport := True;
 end;
 
-procedure TLSPClientCapabilities.AddDiagnosticSupport(const dynamicRegistration, relatedDocumentSupport: Boolean);
+procedure TLSPClientCapabilities.AddDiagnosticSupport(const dynamicRegistration,
+  relatedDocumentSupport: boolean);
 begin
   // textDocument
   if not Assigned(textDocument) then
@@ -6279,18 +6401,21 @@ begin
   textDocument.diagnostic.relatedDocumentSupport := relatedDocumentSupport;
 end;
 
-procedure TLSPClientCapabilities.AddDocumentHighlightsSupport(const dynamicRegistration: Boolean);
+procedure TLSPClientCapabilities.AddDocumentHighlightsSupport
+  (const dynamicRegistration: boolean);
 begin
   // textDocument
   if not Assigned(textDocument) then
     textDocument := TLSPTextDocumentClientCapabilities.Create;
 
   // textDocument/documentHighlight
-  textDocument.documentHighlight := TLSPDocumentHighlightClientCapabilities.Create;
+  textDocument.documentHighlight :=
+    TLSPDocumentHighlightClientCapabilities.Create;
   textDocument.documentHighlight.dynamicRegistration := dynamicRegistration;
 end;
 
-procedure TLSPClientCapabilities.AddDocumentLinkSupport(const dynamicRegistration, toolTipSupport: Boolean);
+procedure TLSPClientCapabilities.AddDocumentLinkSupport
+  (const dynamicRegistration, tooltipSupport: boolean);
 begin
   // textDocument
   if not Assigned(textDocument) then
@@ -6299,11 +6424,12 @@ begin
   // textDocument/documentLink
   textDocument.documentLink := TLSPDocumentLinkClientCapabilities.Create;
   textDocument.documentLink.dynamicRegistration := dynamicRegistration;
-  textDocument.documentLink.tooltipSupport := toolTipSupport;
+  textDocument.documentLink.tooltipSupport := tooltipSupport;
 end;
 
-procedure TLSPClientCapabilities.AddDocumentSymbolSupport(const hierarchicalSymbolSupport, dynamicRegistration,
-    labelSupport: Boolean; const values: TArray<Integer> = nil; const tagSupport: TLSPtagSupport = nil);
+procedure TLSPClientCapabilities.AddDocumentSymbolSupport
+  (const hierarchicalSymbolSupport, dynamicRegistration, labelSupport: boolean;
+  const values: TArray<Integer> = nil; const tagSupport: TLSPTagSupport = nil);
 begin
   // textDocument
   if not Assigned(textDocument) then
@@ -6322,21 +6448,26 @@ begin
   end
   else
   begin
-    SetLength(textDocument.documentSymbol.symbolKind.valueSet,26);
-    textDocument.documentSymbol.symbolKind.valueSet := [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26];
+    SetLength(textDocument.documentSymbol.symbolKind.valueSet, 26);
+    textDocument.documentSymbol.symbolKind.valueSet :=
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+      21, 22, 23, 24, 25, 26];
   end;
-  textDocument.documentSymbol.hierarchicalDocumentSymbolSupport := hierarchicalSymbolSupport;
+  textDocument.documentSymbol.hierarchicalDocumentSymbolSupport :=
+    hierarchicalSymbolSupport;
 
   // tagSupport
   if Assigned(tagSupport) then
   begin
     textDocument.documentSymbol.tagSupport := TLSPTagSupport.Create;
-    textDocument.documentSymbol.tagSupport.valueSet := Copy(tagSupport.valueSet);
+    textDocument.documentSymbol.tagSupport.valueSet :=
+      Copy(tagSupport.valueSet);
   end;
 end;
 
-procedure TLSPClientCapabilities.AddFoldingRangeSupport(const dynamicRegistration: Boolean; const rangeLimit: Integer;
-    const lineFoldingOnly: Boolean);
+procedure TLSPClientCapabilities.AddFoldingRangeSupport
+  (const dynamicRegistration: boolean; const rangeLimit: Integer;
+  const lineFoldingOnly: boolean);
 begin
   // textDocument
   if not Assigned(textDocument) then
@@ -6349,7 +6480,8 @@ begin
   textDocument.foldingRange.lineFoldingOnly := lineFoldingOnly;
 end;
 
-procedure TLSPClientCapabilities.AddFormattingSupport(const dynamicRegistration: Boolean);
+procedure TLSPClientCapabilities.AddFormattingSupport(const dynamicRegistration
+  : boolean);
 begin
   // textDocument
   if not Assigned(textDocument) then
@@ -6360,7 +6492,8 @@ begin
   textDocument.formatting.dynamicRegistration := dynamicRegistration;
 end;
 
-procedure TLSPClientCapabilities.AddGeneralMarkdown(const parser, version: string; const allowedTags: TArray<string>);
+procedure TLSPClientCapabilities.AddGeneralMarkdown(const parser,
+  version: string; const allowedTags: TArray<string>);
 begin
   // general
   if not Assigned(general) then
@@ -6374,7 +6507,8 @@ begin
   general.markdown.allowedTags := Copy(allowedTags);
 end;
 
-procedure TLSPClientCapabilities.AddGeneralPositionEncodings(const positionEncodings: TArray<string>);
+procedure TLSPClientCapabilities.AddGeneralPositionEncodings
+  (const positionEncodings: TArray<string>);
 begin
   // general
   if not Assigned(general) then
@@ -6384,7 +6518,8 @@ begin
   general.positionEncodings := Copy(positionEncodings);
 end;
 
-procedure TLSPClientCapabilities.AddGeneralRegularExpressions(const engine, version: string);
+procedure TLSPClientCapabilities.AddGeneralRegularExpressions(const engine,
+  version: string);
 begin
   // general
   if not Assigned(general) then
@@ -6397,22 +6532,24 @@ begin
   general.regularExpressions.version := version;
 end;
 
-procedure TLSPClientCapabilities.AddGeneralStaleRequestSupport(const cancel: Boolean; const retryOnContentModified:
-    TArray<string>);
+procedure TLSPClientCapabilities.AddGeneralStaleRequestSupport
+  (const cancel: boolean; const retryOnContentModified: TArray<string>);
 begin
   // general
   if not Assigned(general) then
     general := TLSPGeneralClientCapabilities.Create;
 
   // general/staleRequestSupport
-  general.staleRequestSupport := TLSPStaleRequestSupportClientCapabilities.Create;
+  general.staleRequestSupport :=
+    TLSPStaleRequestSupportClientCapabilities.Create;
 
   general.staleRequestSupport.cancel := cancel;
-  general.staleRequestSupport.retryOnContentModified := Copy(retryOnContentModified);
+  general.staleRequestSupport.retryOnContentModified :=
+    Copy(retryOnContentModified);
 end;
 
-procedure TLSPClientCapabilities.AddHoverSupport(const dynamicRegistration, contentFormatPlainText,
-    contentFormatMarkdown: Boolean);
+procedure TLSPClientCapabilities.AddHoverSupport(const dynamicRegistration,
+  contentFormatPlainText, contentFormatMarkdown: boolean);
 begin
   // textDocument
   if not Assigned(textDocument) then
@@ -6424,22 +6561,23 @@ begin
 
   if contentFormatPlainText and contentFormatMarkdown then
   begin
-    SetLength(textDocument.hover.contentFormat,2);
-    textDocument.hover.contentFormat := ['markdown','plaintext'];
+    SetLength(textDocument.hover.contentFormat, 2);
+    textDocument.hover.contentFormat := ['markdown', 'plaintext'];
   end
   else if contentFormatPlainText then
   begin
-    SetLength(textDocument.hover.contentFormat,1);
+    SetLength(textDocument.hover.contentFormat, 1);
     textDocument.hover.contentFormat := ['plaintext'];
   end
   else if contentFormatMarkdown then
   begin
-    SetLength(textDocument.hover.contentFormat,1);
+    SetLength(textDocument.hover.contentFormat, 1);
     textDocument.hover.contentFormat := ['markdown'];
   end;
 end;
 
-procedure TLSPClientCapabilities.AddImplementationSupport(const bLinkSupport: Boolean = False);
+procedure TLSPClientCapabilities.AddImplementationSupport(const bLinkSupport
+  : boolean = False);
 begin
   // textDocument
   if not Assigned(textDocument) then
@@ -6450,8 +6588,8 @@ begin
   textDocument.fimplementation.linkSupport := bLinkSupport;
 end;
 
-procedure TLSPClientCapabilities.AddInlayHintSupport(const dynamicRegistration, resolveSupport: Boolean; const
-    properties: TArray<string>);
+procedure TLSPClientCapabilities.AddInlayHintSupport(const dynamicRegistration,
+  resolveSupport: boolean; const properties: TArray<string>);
 begin
   // textDocument
   if not Assigned(textDocument) then
@@ -6468,7 +6606,8 @@ begin
   end;
 end;
 
-procedure TLSPClientCapabilities.AddInlineValueSupport(const dynamicRegistration: Boolean);
+procedure TLSPClientCapabilities.AddInlineValueSupport(const dynamicRegistration
+  : boolean);
 begin
   // textDocument
   if not Assigned(textDocument) then
@@ -6479,18 +6618,21 @@ begin
   textDocument.inlineValue.dynamicRegistration := dynamicRegistration;
 end;
 
-procedure TLSPClientCapabilities.AddLinkedEditingRangeSupport(const dynamicRegistration: Boolean);
+procedure TLSPClientCapabilities.AddLinkedEditingRangeSupport
+  (const dynamicRegistration: boolean);
 begin
   // textDocument
   if not Assigned(textDocument) then
     textDocument := TLSPTextDocumentClientCapabilities.Create;
 
   // textDocument/linkedEditingRange
-  textDocument.linkedEditingRange := TLSPLinkedEditingRangeClientCapabilities.Create;
+  textDocument.linkedEditingRange :=
+    TLSPLinkedEditingRangeClientCapabilities.Create;
   textDocument.linkedEditingRange.dynamicRegistration := dynamicRegistration;
 end;
 
-procedure TLSPClientCapabilities.AddMonikerSupport(const dynamicRegistration: Boolean);
+procedure TLSPClientCapabilities.AddMonikerSupport(const dynamicRegistration
+  : boolean);
 begin
   // textDocument
   if not Assigned(textDocument) then
@@ -6501,44 +6643,51 @@ begin
   textDocument.moniker.dynamicRegistration := dynamicRegistration;
 end;
 
-procedure TLSPClientCapabilities.AddNotebookDocumentSupport(const dynamicRegistration, executionSummerySupport:
-    Boolean);
+procedure TLSPClientCapabilities.AddNotebookDocumentSupport
+  (const dynamicRegistration, executionSummerySupport: boolean);
 begin
   // notebookDocument
   if not Assigned(notebookDocument) then
     notebookDocument := TLSPNotebookDocumentClientCapabilities.Create;
 
   // notebookDocument/synchronization
-  notebookDocument.synchronization := TLSPNotebookDocumentSyncClientCapabilities.Create;
+  notebookDocument.synchronization :=
+    TLSPNotebookDocumentSyncClientCapabilities.Create;
   notebookDocument.synchronization.dynamicRegistration := dynamicRegistration;
-  notebookDocument.synchronization.executionSummarySupport := executionSummerySupport;
+  notebookDocument.synchronization.executionSummarySupport :=
+    executionSummerySupport;
 end;
 
-procedure TLSPClientCapabilities.AddOnTypeFormattingSupport(const dynamicRegistration: Boolean);
+procedure TLSPClientCapabilities.AddOnTypeFormattingSupport
+  (const dynamicRegistration: boolean);
 begin
   // textDocument
   if not Assigned(textDocument) then
     textDocument := TLSPTextDocumentClientCapabilities.Create;
 
   // textDocument/onTypeFormatting
-  textDocument.onTypeFormatting := TLSPDocumentOnTypeFormattingClientCapabilities.Create;
+  textDocument.onTypeFormatting :=
+    TLSPDocumentOnTypeFormattingClientCapabilities.Create;
   textDocument.onTypeFormatting.dynamicRegistration := dynamicRegistration;
 end;
 
-procedure TLSPClientCapabilities.AddPublishDiagnosticsSupport(const relatedInformation, codeDescriptionSupport,
-    versionSupport, dataSupport: Boolean; const tagSupport: TLSPtagSupportValues = nil);
+procedure TLSPClientCapabilities.AddPublishDiagnosticsSupport
+  (const relatedInformation, codeDescriptionSupport, versionSupport,
+  dataSupport: boolean; const tagSupport: TLSPTagSupportValues = nil);
 begin
   // textDocument
   if not Assigned(textDocument) then
     textDocument := TLSPTextDocumentClientCapabilities.Create;
 
   // textDocument/publishDiagnostics
-  textDocument.publishDiagnostics := TLSPPublishDiagnosticsClientCapabilities.Create;
+  textDocument.publishDiagnostics :=
+    TLSPPublishDiagnosticsClientCapabilities.Create;
 
   if Assigned(tagSupport) then
   begin
     textDocument.publishDiagnostics.tagSupport := TLSPTagSupportValues.Create;
-    textDocument.publishDiagnostics.tagSupport.valueSet := Copy(tagSupport.valueSet);
+    textDocument.publishDiagnostics.tagSupport.valueSet :=
+      Copy(tagSupport.valueSet);
   end;
 
   textDocument.publishDiagnostics.relatedInformation := relatedInformation;
@@ -6547,18 +6696,21 @@ begin
   textDocument.publishDiagnostics.dataSupport := dataSupport;
 end;
 
-procedure TLSPClientCapabilities.AddRangeFormattingSupport(const dynamicRegistration: Boolean);
+procedure TLSPClientCapabilities.AddRangeFormattingSupport
+  (const dynamicRegistration: boolean);
 begin
   // textDocument
   if not Assigned(textDocument) then
     textDocument := TLSPTextDocumentClientCapabilities.Create;
 
   // textDocument/rangeFormatting
-  textDocument.rangeFormatting := TLSPDocumentRangeFormattingClientCapabilities.Create;
+  textDocument.rangeFormatting :=
+    TLSPDocumentRangeFormattingClientCapabilities.Create;
   textDocument.rangeFormatting.dynamicRegistration := dynamicRegistration;
 end;
 
-procedure TLSPClientCapabilities.AddReferencesSupport(const dynamicRegistration: Boolean);
+procedure TLSPClientCapabilities.AddReferencesSupport(const dynamicRegistration
+  : boolean);
 begin
   // textDocument
   if not Assigned(textDocument) then
@@ -6569,8 +6721,9 @@ begin
   textDocument.references.dynamicRegistration := dynamicRegistration;
 end;
 
-procedure TLSPClientCapabilities.AddRenameSupport(const dynamicRegistration, prepareSupport, honorsChangeAnnotations:
-    Boolean; const prepareSupportDefaultBehaviorId: Integer = 0);
+procedure TLSPClientCapabilities.AddRenameSupport(const dynamicRegistration,
+  prepareSupport, honorsChangeAnnotations: boolean;
+  const prepareSupportDefaultBehaviorId: Integer = 0);
 begin
   // textDocument
   if not Assigned(textDocument) then
@@ -6584,12 +6737,15 @@ begin
 
   if prepareSupportDefaultBehaviorId > 0 then
   begin
-    textDocument.rename.prepareSupportDefaultBehavior := TLSPPrepareSupportDefaultBehavior.Create;
-    textDocument.rename.prepareSupportDefaultBehavior.Identifier := prepareSupportDefaultBehaviorId;
+    textDocument.rename.prepareSupportDefaultBehavior :=
+      TLSPPrepareSupportDefaultBehavior.Create;
+    textDocument.rename.prepareSupportDefaultBehavior.identifier :=
+      prepareSupportDefaultBehaviorId;
   end;
 end;
 
-procedure TLSPClientCapabilities.AddSelectionRangeSupport(const dynamicRegistration: Boolean);
+procedure TLSPClientCapabilities.AddSelectionRangeSupport
+  (const dynamicRegistration: boolean);
 begin
   // textDocument
   if not Assigned(textDocument) then
@@ -6600,9 +6756,12 @@ begin
   textDocument.selectionRange.dynamicRegistration := dynamicRegistration;
 end;
 
-procedure TLSPClientCapabilities.AddSemanticTokensSupport(const dynamicRegistration, overlappingTokenSupport,
-    multilineTokenSupport, range: Boolean; const semanticToken: TLSPSemanticTokenTypes; const tokenTypes:
-    TArray<String> = nil; const tokenModifiers: TArray<String> = nil; const formats: TArray<String> = nil);
+procedure TLSPClientCapabilities.AddSemanticTokensSupport
+  (const dynamicRegistration, overlappingTokenSupport, multilineTokenSupport,
+  range: boolean; const semanticToken: TLSPSemanticTokenTypes;
+  const tokenTypes: TArray<String> = nil;
+  const tokenModifiers: TArray<String> = nil;
+  const formats: TArray<String> = nil);
 begin
   // textDocument
   if not Assigned(textDocument) then
@@ -6611,7 +6770,8 @@ begin
   // textDocument/semanticTokens
   textDocument.semanticTokens := TLSPSemanticTokensClientCapabilities.Create;
   textDocument.semanticTokens.dynamicRegistration := dynamicRegistration;
-  textDocument.semanticTokens.overlappingTokenSupport := overlappingTokenSupport;
+  textDocument.semanticTokens.overlappingTokenSupport :=
+    overlappingTokenSupport;
   textDocument.semanticTokens.multilineTokenSupport := multilineTokenSupport;
 
   textDocument.semanticTokens.requests := TLSPRequests.Create;
@@ -6628,8 +6788,9 @@ begin
     textDocument.semanticTokens.formats := Copy(formats);
 end;
 
-procedure TLSPClientCapabilities.AddSignatureHelpSupport(const dynamicRegistration, contentFormatPlainText,
-    contentFormatMarkdown, contextSupport, labelOffsetSupport: Boolean);
+procedure TLSPClientCapabilities.AddSignatureHelpSupport
+  (const dynamicRegistration, contentFormatPlainText, contentFormatMarkdown,
+  contextSupport, labelOffsetSupport: boolean);
 begin
   // textDocument
   if not Assigned(textDocument) then
@@ -6640,32 +6801,41 @@ begin
   textDocument.signatureHelp.dynamicRegistration := dynamicRegistration;
   textDocument.signatureHelp.contextSupport := contextSupport;
 
-  textDocument.signatureHelp.signatureInformation := TLSPClientSignatureInformation.Create;
+  textDocument.signatureHelp.signatureInformation :=
+    TLSPClientSignatureInformation.Create;
   if contentFormatPlainText and contentFormatMarkdown then
   begin
-    SetLength(textDocument.signatureHelp.signatureInformation.documentationFormat,2);
-    textDocument.signatureHelp.signatureInformation.documentationFormat := ['plaintext', 'markdown'];
+    SetLength(textDocument.signatureHelp.signatureInformation.
+      documentationFormat, 2);
+    textDocument.signatureHelp.signatureInformation.documentationFormat :=
+      ['plaintext', 'markdown'];
   end
   else if contentFormatPlainText then
   begin
-    SetLength(textDocument.signatureHelp.signatureInformation.documentationFormat,1);
-    textDocument.signatureHelp.signatureInformation.documentationFormat := ['plaintext'];
+    SetLength(textDocument.signatureHelp.signatureInformation.
+      documentationFormat, 1);
+    textDocument.signatureHelp.signatureInformation.documentationFormat :=
+      ['plaintext'];
   end
   else if contentFormatMarkdown then
   begin
-    SetLength(textDocument.signatureHelp.signatureInformation.documentationFormat,1);
-    textDocument.signatureHelp.signatureInformation.documentationFormat := ['markdown'];
+    SetLength(textDocument.signatureHelp.signatureInformation.
+      documentationFormat, 1);
+    textDocument.signatureHelp.signatureInformation.documentationFormat :=
+      ['markdown'];
   end;
 
   if labelOffsetSupport then
   begin
-    textDocument.signatureHelp.signatureInformation.parameterInformation := TLSPClientParameterInformation.Create;
-    textDocument.signatureHelp.signatureInformation.parameterInformation.labelOffsetSupport := labelOffsetSupport;
+    textDocument.signatureHelp.signatureInformation.parameterInformation :=
+      TLSPClientParameterInformation.Create;
+    textDocument.signatureHelp.signatureInformation.parameterInformation.
+      labelOffsetSupport := labelOffsetSupport;
   end;
 end;
 
-procedure TLSPClientCapabilities.AddSynchronizationSupport(const didSave, willSave, willSaveWaitUntil,
-    dynamicRegistration: Boolean);
+procedure TLSPClientCapabilities.AddSynchronizationSupport(const didSave,
+  willSave, willSaveWaitUntil, dynamicRegistration: boolean);
 begin
   // textDocument
   if not Assigned(textDocument) then
@@ -6679,7 +6849,8 @@ begin
   textDocument.synchronization.willSaveWaitUntil := willSaveWaitUntil;
 end;
 
-procedure TLSPClientCapabilities.AddTypeDefinitionSupport(const bLinkSupport: Boolean = False);
+procedure TLSPClientCapabilities.AddTypeDefinitionSupport(const bLinkSupport
+  : boolean = False);
 begin
   // textDocument
   if not Assigned(textDocument) then
@@ -6690,7 +6861,8 @@ begin
   textDocument.typeDefinition.linkSupport := bLinkSupport;
 end;
 
-procedure TLSPClientCapabilities.AddTypeHierarchySupport(const dynamicRegistration: Boolean);
+procedure TLSPClientCapabilities.AddTypeHierarchySupport
+  (const dynamicRegistration: boolean);
 begin
   // textDocument
   if not Assigned(textDocument) then
@@ -6711,7 +6883,8 @@ begin
   window.showDocument.support := True;
 end;
 
-procedure TLSPClientCapabilities.AddWindowShowMessage(const additionalPropertiesSupport: Boolean);
+procedure TLSPClientCapabilities.AddWindowShowMessage
+  (const additionalPropertiesSupport: boolean);
 begin
   // window
   if not Assigned(window) then
@@ -6719,10 +6892,12 @@ begin
 
   window.showMessage := TLSPShowMessageRequestClientCapabilities.Create;
   window.showMessage.messageActionItem := TLSPMessageActionItem.Create;
-  window.showMessage.messageActionItem.additionalPropertiesSupport := additionalPropertiesSupport;
+  window.showMessage.messageActionItem.additionalPropertiesSupport :=
+    additionalPropertiesSupport;
 end;
 
-procedure TLSPClientCapabilities.AddWindowWorkDoneProgress(const value: Boolean = True);
+procedure TLSPClientCapabilities.AddWindowWorkDoneProgress
+  (const value: boolean = True);
 begin
   // window
   if not Assigned(window) then
@@ -6731,7 +6906,8 @@ begin
   window.workDoneProgress := value;
 end;
 
-procedure TLSPClientCapabilities.AddWorkspaceCapabilities(const applyEdit, workspaceFolders, configuration: Boolean);
+procedure TLSPClientCapabilities.AddWorkspaceCapabilities(const applyEdit,
+  workspaceFolders, configuration: boolean);
 begin
   // workspace
   if not Assigned(workspace) then
@@ -6742,7 +6918,8 @@ begin
   workspace.configuration := configuration;
 end;
 
-procedure TLSPClientCapabilities.AddWorkspaceCodeLens(const refreshSupport: Boolean);
+procedure TLSPClientCapabilities.AddWorkspaceCodeLens(const refreshSupport
+  : boolean);
 begin
   // workspace
   if not Assigned(workspace) then
@@ -6753,7 +6930,8 @@ begin
   workspace.codeLens.refreshSupport := refreshSupport;
 end;
 
-procedure TLSPClientCapabilities.AddWorkspaceDiagnostics(const refreshSupport: Boolean);
+procedure TLSPClientCapabilities.AddWorkspaceDiagnostics(const refreshSupport
+  : boolean);
 begin
   // workspace
   if not Assigned(workspace) then
@@ -6764,31 +6942,38 @@ begin
   workspace.diagnostics.refreshSupport := refreshSupport;
 end;
 
-procedure TLSPClientCapabilities.AddWorkspaceDidChangeConfiguration(const dynamicRegistration: Boolean);
+procedure TLSPClientCapabilities.AddWorkspaceDidChangeConfiguration
+  (const dynamicRegistration: boolean);
 begin
   // workspace
   if not Assigned(workspace) then
     workspace := TLSPWorkspace.Create;
 
   // workspace/didChangeConfiguration
-  workspace.didChangeConfiguration := TLSPDidChangeConfigurationClientCapabilities.Create;
+  workspace.didChangeConfiguration :=
+    TLSPDidChangeConfigurationClientCapabilities.Create;
   workspace.didChangeConfiguration.dynamicRegistration := dynamicRegistration;
 end;
 
-procedure TLSPClientCapabilities.AddWorkspaceDidChangeWatchedFiles(const dynamicRegistration: Boolean);
+procedure TLSPClientCapabilities.AddWorkspaceDidChangeWatchedFiles
+  (const dynamicRegistration: boolean);
 begin
   // workspace
   if not Assigned(workspace) then
     workspace := TLSPWorkspace.Create;
 
   // workspace/didChangeWatchedFiles
-  workspace.didChangeWatchedFiles := TLSPDidChangeWatchedFilesClientCapabilities.Create;
+  workspace.didChangeWatchedFiles :=
+    TLSPDidChangeWatchedFilesClientCapabilities.Create;
   workspace.didChangeWatchedFiles.dynamicRegistration := dynamicRegistration;
 end;
 
-procedure TLSPClientCapabilities.AddWorkspaceEdit(const documentChanges, normalizeLineEndings: Boolean; const
-    failureHandling: string = 'transactional'; const changeAnnotationSupport: Boolean = False; const changeAnnotationGroupsOnLabel:
-    Boolean = False; const resourceOperations: TArray<TLSPResourceOperationKind> = nil);
+procedure TLSPClientCapabilities.AddWorkspaceEdit(const documentChanges,
+  normalizeLineEndings: boolean;
+  const failureHandling: string = 'transactional';
+  const changeAnnotationSupport: boolean = False;
+  const changeAnnotationGroupsOnLabel: boolean = False;
+  const resourceOperations: TArray<TLSPResourceOperationKind> = nil);
 begin
   // workspace
   if not Assigned(workspace) then
@@ -6805,12 +6990,15 @@ begin
 
   if changeAnnotationSupport then
   begin
-    workspace.workspaceEdit.changeAnnotationSupport := TLSPchangeAnnotationSupport.Create;
-    workspace.workspaceEdit.changeAnnotationSupport.groupsOnLabel := changeAnnotationGroupsOnLabel;
+    workspace.workspaceEdit.changeAnnotationSupport :=
+      TLSPchangeAnnotationSupport.Create;
+    workspace.workspaceEdit.changeAnnotationSupport.groupsOnLabel :=
+      changeAnnotationGroupsOnLabel;
   end;
 end;
 
-procedure TLSPClientCapabilities.AddWorkspaceExecuteCommand(const dynamicRegistration: Boolean);
+procedure TLSPClientCapabilities.AddWorkspaceExecuteCommand
+  (const dynamicRegistration: boolean);
 begin
   // workspace
   if not Assigned(workspace) then
@@ -6820,8 +7008,9 @@ begin
   workspace.executeCommand.dynamicRegistration := dynamicRegistration;
 end;
 
-procedure TLSPClientCapabilities.AddWorkspaceFileOperations(const dynamicRegistration, didCreate, willCreate,
-    didRename, willRename, didDelete, willDelete: Boolean);
+procedure TLSPClientCapabilities.AddWorkspaceFileOperations
+  (const dynamicRegistration, didCreate, willCreate, didRename, willRename,
+  didDelete, willDelete: boolean);
 begin
   // workspace
   if not Assigned(workspace) then
@@ -6839,7 +7028,8 @@ begin
   workspace.fileOperations.willDelete := willDelete;
 end;
 
-procedure TLSPClientCapabilities.AddWorkspaceInlayHint(const refreshSupport: Boolean);
+procedure TLSPClientCapabilities.AddWorkspaceInlayHint(const refreshSupport
+  : boolean);
 begin
   // workspace
   if not Assigned(workspace) then
@@ -6850,7 +7040,8 @@ begin
   workspace.inlayHint.refreshSupport := refreshSupport;
 end;
 
-procedure TLSPClientCapabilities.AddWorkspaceInlineValue(const refreshSupport: Boolean);
+procedure TLSPClientCapabilities.AddWorkspaceInlineValue(const refreshSupport
+  : boolean);
 begin
   // workspace
   if not Assigned(workspace) then
@@ -6861,19 +7052,22 @@ begin
   workspace.inlineValue.refreshSupport := refreshSupport;
 end;
 
-procedure TLSPClientCapabilities.AddWorkspaceSemanticTokens(const refreshSupport: Boolean);
+procedure TLSPClientCapabilities.AddWorkspaceSemanticTokens(const refreshSupport
+  : boolean);
 begin
   // workspace
   if not Assigned(workspace) then
     workspace := TLSPWorkspace.Create;
 
   // workspace/semanticTokens
-  workspace.semanticTokens := TLSPSemanticTokensWorkspaceClientCapabilities.Create;
+  workspace.semanticTokens :=
+    TLSPSemanticTokensWorkspaceClientCapabilities.Create;
   workspace.semanticTokens.refreshSupport := refreshSupport;
 end;
 
-procedure TLSPClientCapabilities.AddWorkspaceSymbol(const dynamicRegistration: Boolean; const symbolKindValues:
-    TArray<Integer> = nil; const tagSupportValues: TArray<TLSPCompletionItemTag> = nil);
+procedure TLSPClientCapabilities.AddWorkspaceSymbol(const dynamicRegistration
+  : boolean; const symbolKindValues: TArray<Integer> = nil;
+  const tagSupportValues: TArray<TLSPCompletionItemTag> = nil);
 begin
   // workspace
   if not Assigned(workspace) then
@@ -6891,8 +7085,9 @@ begin
   end
   else
   begin
-    SetLength(workspace.symbol.symbolKind.valueSet,26);
-    workspace.symbol.symbolKind.valueSet := [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26];
+    SetLength(workspace.symbol.symbolKind.valueSet, 26);
+    workspace.symbol.symbolKind.valueSet := [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+      12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26];
   end;
 
   // workspace/symbol/tagSupport
@@ -6937,7 +7132,7 @@ end;
 
 destructor TLSPSymbolKindValues.Destroy;
 begin
-  SetLength(valueSet,0);
+  SetLength(valueSet, 0);
   inherited;
 end;
 
@@ -6946,15 +7141,15 @@ end;
 constructor TLSPWorkspaceEditClientCapabilities.Create;
 begin
   inherited;
-  SetLength(resourceOperations,3);
-  resourceOperations := ['create','rename','delete'];
+  SetLength(resourceOperations, 3);
+  resourceOperations := ['create', 'rename', 'delete'];
   failureHandling := 'transactional';
   documentChanges := True;
 end;
 
 destructor TLSPWorkspaceEditClientCapabilities.Destroy;
 begin
-  SetLength(resourceOperations,0);
+  SetLength(resourceOperations, 0);
   inherited;
 end;
 
@@ -6967,7 +7162,7 @@ end;
 
 destructor TLSPCodeActionKindValues.Destroy;
 begin
-  SetLength(valueSet,0);
+  SetLength(valueSet, 0);
   inherited;
 end;
 
@@ -7036,7 +7231,7 @@ end;
 
 destructor TLSPHoverClientCapabilities.Destroy;
 begin
-  SetLength(contentFormat,0);
+  SetLength(contentFormat, 0);
   inherited;
 end;
 
@@ -7066,13 +7261,13 @@ begin
   deprecatedSupport := True;
   preselectSupport := True;
 
-  SetLength(documentationFormat,1);
+  SetLength(documentationFormat, 1);
   documentationFormat := ['plaintext'];
 end;
 
 destructor TLSPClientCompletionItem.Destroy;
 begin
-  SetLength(documentationFormat,0);
+  SetLength(documentationFormat, 0);
   FreeAndNil(tagSupport);
   inherited;
 end;
@@ -7097,13 +7292,13 @@ end;
 constructor TLSPClientSignatureInformation.Create;
 begin
   inherited;
-  SetLength(documentationFormat,1);
+  SetLength(documentationFormat, 1);
   documentationFormat := ['plaintext'];
 end;
 
 destructor TLSPClientSignatureInformation.Destroy;
 begin
-  SetLength(documentationFormat,0);
+  SetLength(documentationFormat, 0);
   FreeAndNil(parameterInformation);
   inherited;
 end;
@@ -7152,7 +7347,7 @@ end;
 
 destructor TLSPCompletionItemKindValues.Destroy;
 begin
-  SetLength(valueSet,0);
+  SetLength(valueSet, 0);
   inherited;
 end;
 
@@ -7184,7 +7379,7 @@ end;
 
 destructor TLSPTagSupportValues.Destroy;
 begin
-  SetLength(valueSet,0);
+  SetLength(valueSet, 0);
   inherited;
 end;
 
@@ -7197,7 +7392,7 @@ end;
 
 destructor TLSPTagSupport.Destroy;
 begin
-  SetLength(valueSet,0);
+  SetLength(valueSet, 0);
   inherited;
 end;
 
@@ -7208,12 +7403,12 @@ begin
   inherited;
   dynamicRegistration := False;
 
-  SetLength(tokenTypes,0);
+  SetLength(tokenTypes, 0);
 
-  SetLength(tokenModifiers,0);
+  SetLength(tokenModifiers, 0);
 
   // The formats the clients supports.
-  SetLength(formats,0);
+  SetLength(formats, 0);
 
   // Whether the client supports tokens that can overlap each other.
   overlappingTokenSupport := False;
@@ -7225,8 +7420,8 @@ end;
 destructor TLSPSemanticTokensClientCapabilities.Destroy;
 begin
   FreeAndNil(requests);
-  SetLength(tokenTypes,0);
-  SetLength(tokenModifiers,0);
+  SetLength(tokenTypes, 0);
+  SetLength(tokenModifiers, 0);
   inherited;
 end;
 
@@ -7382,7 +7577,7 @@ begin
   FreeAndNil(regularExpressions);
   FreeAndNil(markdown);
   FreeAndNil(staleRequestSupport);
-  SetLength(positionEncodings,0);
+  SetLength(positionEncodings, 0);
   inherited;
 end;
 
@@ -7442,26 +7637,26 @@ end;
 
 destructor TLSPMarkdownClientCapabilities.Destroy;
 begin
-  SetLength(allowedTags,0);
+  SetLength(allowedTags, 0);
   inherited;
 end;
 
 destructor TLSPStaleRequestSupportClientCapabilities.Destroy;
 begin
-  SetLength(retryOnContentModified,0);
+  SetLength(retryOnContentModified, 0);
   inherited;
 end;
 
 destructor TLSPNotebookDocument.Destroy;
 begin
-  SetLength(cells,0);
+  SetLength(cells, 0);
   inherited;
 end;
 
 destructor TLSPDidOpenNotebookDocumentParams.Destroy;
 begin
   FreeAndNil(notebookDocument);
-  SetLength(cellTextDocuments,0);
+  SetLength(cellTextDocuments, 0);
   inherited;
 end;
 
@@ -7481,13 +7676,13 @@ constructor TLSPDidChangeNotebookDocumentParams.Create;
 begin
   inherited;
   notebookDocument := TLSPVersionedNotebookDocumentIdentifier.Create;
-  change := TLSPNotebookDocumentChangeEvent.Create;
+  Change := TLSPNotebookDocumentChangeEvent.Create;
 end;
 
 destructor TLSPDidChangeNotebookDocumentParams.Destroy;
 begin
   FreeAndNil(notebookDocument);
-  FreeAndNil(change);
+  FreeAndNil(Change);
   inherited;
 end;
 
@@ -7513,8 +7708,8 @@ end;
 
 destructor TLSPInlayHint.Destroy;
 begin
-  SetLength(labelParts,0);
-  SetLength(textEdits,0);
+  SetLength(labelParts, 0);
+  SetLength(textEdits, 0);
   inherited;
 end;
 
@@ -7532,113 +7727,113 @@ end;
 
 destructor TLSPCompletionItemDefaults.Destroy;
 begin
-  SetLength(commitCharacters,0);
+  SetLength(commitCharacters, 0);
   FreeAndNil(editRange);
   inherited;
 end;
 
 destructor TLSPWorkspaceDiagnosticReport.Destroy;
 begin
-  SetLength(items,0);
+  SetLength(items, 0);
   inherited;
 end;
 
 destructor TLSPResolveSupport.Destroy;
 begin
-  SetLength(properties,0);
+  SetLength(properties, 0);
   inherited;
 end;
 
 destructor TLSPSignatureHelpOptions.Destroy;
 begin
-  SetLength(triggerCharacters,0);
-  SetLength(retriggerCharacters,0);
+  SetLength(triggerCharacters, 0);
+  SetLength(retriggerCharacters, 0);
   inherited;
 end;
 
 destructor TLSPTextDocumentRegistrationOptions.Destroy;
 begin
-  SetLength(documentSelector,0);
+  SetLength(documentSelector, 0);
   inherited;
 end;
 
 destructor TLSPCodeActionOptions.Destroy;
 begin
-  SetLength(codeActionKinds,0);
+  SetLength(codeActionKinds, 0);
   inherited;
 end;
 
 destructor TLSPSemanticTokensLegend.Destroy;
 begin
-  SetLength(tokenTypes,0);
-  SetLength(tokenModifiers,0);
+  SetLength(tokenTypes, 0);
+  SetLength(tokenModifiers, 0);
   inherited;
 end;
 
 destructor TLSPSemanticTokensRegistrationOptions.Destroy;
 begin
-  SetLength(documentSelector,0);
+  SetLength(documentSelector, 0);
   inherited;
 end;
 
 destructor TLSPMonikerRegistrationOptions.Destroy;
 begin
-  SetLength(documentSelector,0);
+  SetLength(documentSelector, 0);
   inherited;
 end;
 
 destructor TLSPDocumentOnTypeFormattingOptions.Destroy;
 begin
-  SetLength(moreTriggerCharacter,0);
+  SetLength(moreTriggerCharacter, 0);
   inherited;
 end;
 
 destructor TLSPExecuteCommandOptions.Destroy;
 begin
-  SetLength(commands,0);
+  SetLength(commands, 0);
   inherited;
 end;
 
 destructor TLSPTextDocumentEdit.Destroy;
 begin
-  SetLength(edits,0);
+  SetLength(edits, 0);
   inherited;
 end;
 
 destructor TLSPRegistrationOption.Destroy;
 begin
-  SetLength(watchers,0);
+  SetLength(watchers, 0);
   inherited;
 end;
 
 destructor TLSPSignatureHelpRegistrationOptions.Destroy;
 begin
-  SetLength(triggerCharacters,0);
-  SetLength(retriggerCharacters,0);
+  SetLength(triggerCharacters, 0);
+  SetLength(retriggerCharacters, 0);
   inherited;
 end;
 
 destructor TLSPCodeActionRegistrationOptions.Destroy;
 begin
-  SetLength(codeActionKinds,0);
+  SetLength(codeActionKinds, 0);
   inherited;
 end;
 
 destructor TLSPDocumentOnTypeFormattingRegistrationOptions.Destroy;
 begin
-  SetLength(moreTriggerCharacter,0);
+  SetLength(moreTriggerCharacter, 0);
   inherited;
 end;
 
 destructor TLSPDidChangeWatchedFilesRegistrationOptions.Destroy;
 begin
-  SetLength(watchers,0);
+  SetLength(watchers, 0);
   inherited;
 end;
 
 destructor TLSPExecuteCommandRegistrationOptions.Destroy;
 begin
-  SetLength(commands,0);
+  SetLength(commands, 0);
   inherited;
 end;
 
@@ -7646,7 +7841,7 @@ end;
 constructor TLSPMessage.Create;
 begin
   Inc(FId);
-  Id := FId;
+  id := FId;
 end;
-end.
 
+end.

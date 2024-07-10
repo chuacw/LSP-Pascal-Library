@@ -1,21 +1,21 @@
 (*
- *                       Pascal LSP Client
- *
- * Usage allowed under the restrictions of the Lesser GNU General Public License
- * or alternatively the restrictions of the Mozilla Public License 1.1
- *
- * Software distributed under the License is distributed on an "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied.
- *
- * Unit owner : Rickard Johansson <support@rj-texted.se>
- * Web site   : https://www.rj-texted.se
- * Github     : https://github.com/rickard67/LSP-Pascal-Library
- *
- * Embarcadero Technologies, Inc is not permitted to use or redistribute
- * this source code without explicit permission.
- *
- * Copyright � 2021 Rickard Johansson. All rights reserved.
- *
+  *                       Pascal LSP Client
+  *
+  * Usage allowed under the restrictions of the Lesser GNU General Public License
+  * or alternatively the restrictions of the Mozilla Public License 1.1
+  *
+  * Software distributed under the License is distributed on an "AS IS" basis,
+  * WITHOUT WARRANTY OF ANY KIND, either express or implied.
+  *
+  * Unit owner : Rickard Johansson <support@rj-texted.se>
+  * Web site   : https://www.rj-texted.se
+  * Github     : https://github.com/rickard67/LSP-Pascal-Library
+  *
+  * Embarcadero Technologies, Inc is not permitted to use or redistribute
+  * this source code without explicit permission.
+  *
+  * Copyright � 2021 Rickard Johansson. All rights reserved.
+  *
 *)
 
 unit XLSPExecute;
@@ -26,8 +26,10 @@ uses
   System.Classes, Winapi.Windows, XSuperObject, IdTCPServer, IdContext;
 
 type
-  TReadFromServerEvent = procedure(Sender: TObject; const AJson: ISuperObject; const APlainText: string) of object;
-  TWriteToServerEvent = procedure(Sender: TObject; out s: RawByteString) of object;
+  TReadFromServerEvent = procedure(Sender: TObject; const AJson: ISuperObject;
+    const APlainText: string) of object;
+  TWriteToServerEvent = procedure(Sender: TObject; out s: RawByteString)
+    of object;
   TExitServerEvent = procedure(Sender: TObject; exitcode: Integer) of object;
 
   TLSPExecuteServerThread = class(TThread)
@@ -64,8 +66,10 @@ type
     property Port: Integer read FPort write FPort;
     property UseSocket: Boolean read FUseSocket write FUseSocket;
     property OnExit: TExitServerEvent read FOnExit write FOnExit;
-    property OnReadFromServer: TReadFromServerEvent read FOnReadFromServer write FOnReadFromServer;
-    property OnWriteToServer: TWriteToServerEvent read FOnWriteToServer write FOnWriteToServer;
+    property OnReadFromServer: TReadFromServerEvent read FOnReadFromServer
+      write FOnReadFromServer;
+    property OnWriteToServer: TWriteToServerEvent read FOnWriteToServer
+      write FOnWriteToServer;
   end;
 
 implementation
@@ -88,34 +92,34 @@ begin
   LTerminated := Terminated;
   inherited;
   if LTerminated then
-    TerminateProcess(FProcessInformation.hProcess,4);
+    TerminateProcess(FProcessInformation.hProcess, 4);
 end;
-
 
 { TLSPExecuteServerThread }
 
 procedure TLSPExecuteServerThread.Execute;
 begin
-  FreeOnTerminate := True;
+  FreeOnTerminate := true;
   if FUseSocket then
     RunServerThroughSocket(FCommandline)
   else
     RunServer(FCommandline);
 end;
 
-function TLSPExecuteServerThread.ExtractAndSendResponseMessages(const AStr: RawByteString): Boolean;
+function TLSPExecuteServerThread.ExtractAndSendResponseMessages
+  (const AStr: RawByteString): Boolean;
 const
   CLHeader = 'Content-Length:';
-  ContentId = #13#10#13#10+'{';
+  ContentId = #13#10#13#10 + '{';
 var
   s: string;
   w: string;
-  n,nc,ln: Integer;
+  n, nc, ln: Integer;
   cx: Integer;
 
   function FindHeader(var len: Integer; const cx: Integer): Integer;
   var
-    i,j: Integer;
+    i, j: Integer;
     w: string;
   begin
     // Find the next content-length header and extract
@@ -123,15 +127,16 @@ var
     Result := 0;
     try
       len := 0;
-      i := PosEx(CLHeader,s,cx);
-      if i = 0 then Exit;
+      i := PosEx(CLHeader, s, cx);
+      if i = 0 then
+        Exit;
 
-      j := PosEx(#13#10,s,i);
+      j := PosEx(#13#10, s, i);
       if (j > i) then
       begin
         Result := i;
         i := i + 14;
-        w := Trim(Copy(s,i+1,j-i-1));
+        w := Trim(Copy(s, i + 1, j - i - 1));
         if w <> '' then
           len := StrToInt(w);
       end;
@@ -153,8 +158,9 @@ var
     FJson := nil;
     Synchronize(SendToClient);
   end;
+
 begin
-  Result := True;
+  Result := true;
   s := UTF8ToString(AStr);
 
   cx := 1;
@@ -163,19 +169,19 @@ begin
   begin
     nc := 0;
     ln := 0;
-    n := FindHeader(ln,cx);
+    n := FindHeader(ln, cx);
     if (n > 0) and (ln > 0) then
       nc := FindContent(n);
 
     if nc > 0 then
     begin
       // Find and extract plain text before request
-      w := Copy(s,cx,n-cx);
+      w := Copy(s, cx, n - cx);
       if Length(w) > 0 then
         SendAsPlainText(w);
 
       // Extract request
-      w := Copy(s,nc,ln);
+      w := Copy(s, nc, ln);
       if Length(w) > 0 then
       begin
         FPlainText := w;
@@ -192,7 +198,7 @@ begin
     begin
       // We didn't find content so send the rest as plain text
       // to the client.
-      w := Copy(s,cx,Length(s));
+      w := Copy(s, cx, Length(s));
       SendAsPlainText(w);
       Break;
     end;
@@ -207,7 +213,7 @@ var
   SI: TStartupInfo;
   SA: TSecurityAttributes;
   SD: PSECURITY_DESCRIPTOR;
-  outputreadtmp,outputwrite,errorwrite,inputRead,inputWritetmp: THandle;
+  outputreadtmp, outputwrite, errorwrite, inputRead, inputWritetmp: THandle;
   read_stdout, write_stdin: THandle;
   WasOK: Boolean;
   Buffer: RawByteString;
@@ -218,77 +224,82 @@ var
   LCommandLine: string;
   PArguments, PCommandLine, LDir: PChar;
 begin
-  FExitcode := 0;
+  FExitCode := 0;
   try
     with SA do
     begin
       lpSecurityDescriptor := nil;
       nLength := sizeof(SECURITY_ATTRIBUTES);
-      bInheritHandle := True;
+      bInheritHandle := true;
     end;
 
     try
 
-        // Create pipes
-        if not(CreatePipe(outputreadtmp, outputwrite, @SA, 0)) then
-          raise Exception.Create('Could not create pipe!');
+      // Create pipes
+      if not(CreatePipe(outputreadtmp, outputwrite, @SA, 0)) then
+        raise Exception.Create('Could not create pipe!');
 
-        if not(DuplicateHandle(GetCurrentProcess, outputwrite, GetCurrentProcess,
-          @errorwrite, 0, True, DUPLICATE_SAME_ACCESS)) then
-          raise Exception.Create('Could not create pipe!');
+      if not(DuplicateHandle(GetCurrentProcess, outputwrite, GetCurrentProcess,
+        @errorwrite, 0, true, DUPLICATE_SAME_ACCESS)) then
+        raise Exception.Create('Could not create pipe!');
 
-        if not(CreatePipe(inputRead, inputWritetmp, @SA, 0)) then
-          raise Exception.Create('Could not create pipe!');
+      if not(CreatePipe(inputRead, inputWritetmp, @SA, 0)) then
+        raise Exception.Create('Could not create pipe!');
 
-        if not(DuplicateHandle(GetCurrentProcess, outputreadtmp,
-          GetCurrentProcess, @read_stdout, 0, False, DUPLICATE_SAME_ACCESS)) then
-          raise Exception.Create('Could not create pipe!');
+      if not(DuplicateHandle(GetCurrentProcess, outputreadtmp,
+        GetCurrentProcess, @read_stdout, 0, False, DUPLICATE_SAME_ACCESS)) then
+        raise Exception.Create('Could not create pipe!');
 
-        if not(DuplicateHandle(GetCurrentProcess, inputWritetmp,
-          GetCurrentProcess, @write_stdin, 0, False, DUPLICATE_SAME_ACCESS)) then
-          raise Exception.Create('Could not create pipe!');
+      if not(DuplicateHandle(GetCurrentProcess, inputWritetmp,
+        GetCurrentProcess, @write_stdin, 0, False, DUPLICATE_SAME_ACCESS)) then
+        raise Exception.Create('Could not create pipe!');
 
-        if not CloseHandle(outputreadtmp) then
-          raise Exception.Create('Could not create pipe!');
-        if not CloseHandle(inputWritetmp) then
-          raise Exception.Create('Could not create pipe!');
+      if not CloseHandle(outputreadtmp) then
+        raise Exception.Create('Could not create pipe!');
+      if not CloseHandle(inputWritetmp) then
+        raise Exception.Create('Could not create pipe!');
 
-        GetStartupInfo(SI);
-        with SI do
-        begin
-          cb := SizeOf(SI);
-          dwFlags := STARTF_USESHOWWINDOW or STARTF_USESTDHANDLES;
-          wShowWindow := SW_HIDE;
-          hStdInput := inputRead;
-          hStdOutput := outputwrite;
-          hStdError := errorwrite;
-        end;
+      GetStartupInfo(SI);
+      with SI do
+      begin
+        cb := sizeof(SI);
+        dwFlags := STARTF_USESHOWWINDOW or STARTF_USESTDHANDLES;
+        wShowWindow := SW_HIDE;
+        hStdInput := inputRead;
+        hStdOutput := outputwrite;
+        hStdError := errorwrite;
+      end;
 
-        // Run LSP server
-        if FDir <> '' then
-          SetCurrentDir(FDir);
-        if FDir = '' then
-          LDir := nil else
-          LDir := PChar(FDir);
-        LCommandLine := ACommandLine;
-        SetLength(LCommandLine, Length(LCommandLine)+(SizeOf(Char)*2));
-        UniqueString(LCommandLine);
-        if FArguments = '' then
-          begin
-            PArguments := PChar(LCommandLine);
-            PCommandLine := nil;
-          end else
-          begin
-            PCommandLine := PChar(LCommandLine);
-            PArguments := PChar(FArguments);
-          end;
+      // Run LSP server
+      if FDir <> '' then
+        SetCurrentDir(FDir);
+      if FDir = '' then
+        LDir := nil
+      else
+        LDir := PChar(FDir);
+      LCommandLine := ACommandline;
+      SetLength(LCommandLine, Length(LCommandLine) + (sizeof(Char) * 2));
+      UniqueString(LCommandLine);
+      if FArguments = '' then
+      begin
+        PArguments := PChar(LCommandLine);
+        PCommandLine := nil;
+      end
+      else
+      begin
+        PCommandLine := PChar(LCommandLine);
+        PArguments := PChar(FArguments);
+      end;
 
-        if not CreateProcess(PCommandLine, PArguments, nil, nil, True, NORMAL_PRIORITY_CLASS or CREATE_NO_WINDOW, nil, LDir, SI, FProcessInformation) then
-        begin
-          var LLastMsg := SysErrorMessage(GetLastError);
-          raise Exception.CreateFmt('Could not run language server due to %s!',
-            [LLastMsg]);
-        end;
+      if not CreateProcess(PCommandLine, PArguments, nil, nil, true,
+        NORMAL_PRIORITY_CLASS or CREATE_NO_WINDOW, nil, LDir, SI,
+        FProcessInformation) then
+      begin
+        var
+        LLastMsg := SysErrorMessage(GetLastError);
+        raise Exception.CreateFmt('Could not run language server due to %s!',
+          [LLastMsg]);
+      end;
 
     finally
       if not CloseHandle(outputwrite) then
@@ -303,7 +314,7 @@ begin
       FInputRaw := '';
       FOutputRaw := '';
       repeat
-        WasOK := True;
+        WasOK := true;
 
         // See if data is available from the server
         PeekNamedPipe(read_stdout, nil, 0, nil, @dAvailable, nil);
@@ -315,13 +326,14 @@ begin
           ln := 0;
           repeat
             // Read buffer
-            WasOK := ReadFile(read_stdout, Buffer[1], dAvailable, dBytesRead, nil);
+            WasOK := ReadFile(read_stdout, Buffer[1], dAvailable,
+              dBytesRead, nil);
 
             // Did we read anything?
             if dBytesRead > 0 then
             begin
               // Combine the buffer with the rest of the previous runs
-              FInputRaw := FInputRaw + Copy(Buffer,1,dBytesRead);
+              FInputRaw := FInputRaw + Copy(Buffer, 1, dBytesRead);
               Inc(ln, dBytesRead);
             end;
           until (ln = dAvailable) or (dBytesRead = 0);
@@ -353,14 +365,16 @@ begin
 
         // Write data to the server
         Synchronize(GetDataFromClient);
-        if (FOutputRaw <> '') then
+        if (FOutPutRaw <> '') then
         begin
-          WriteFile(write_stdin, PRawByteString(FOutputRaw)^, Length(FOutputRaw), dBytesWrite, nil);
-          FOutputRaw := '';
+          WriteFile(write_stdin, PRawByteString(FOutPutRaw)^,
+            Length(FOutPutRaw), dBytesWrite, nil);
+          FOutPutRaw := '';
         end;
 
         sleep(20);
-        if WaitForSingleObject(FProcessInformation.hProcess, 0) = WAIT_OBJECT_0 then
+        if WaitForSingleObject(FProcessInformation.hProcess, 0) = WAIT_OBJECT_0
+        then
         begin
           // The server has terminated (or crashed)
           Break;
@@ -370,7 +384,7 @@ begin
       TerminateProcess(FProcessInformation.hProcess, 0);
 
       // Close all remaining handles
-      GetExitCodeProcess(FProcessInformation.hProcess,FExitCode);
+      GetExitCodeProcess(FProcessInformation.hProcess, FExitCode);
       CloseHandle(FProcessInformation.hThread);
       CloseHandle(FProcessInformation.hProcess);
     end;
@@ -380,7 +394,7 @@ begin
   end;
 
   if Assigned(FOnExit) then
-    FOnExit(Self,FExitCode);
+    FOnExit(Self, FExitCode);
 end;
 
 procedure TLSPExecuteServerThread.GetDataFromClient;
@@ -397,10 +411,10 @@ procedure TLSPExecuteServerThread.IdTCPServerExecute(AContext: TIdContext);
 var
   buf: TIdBytes;
   s: RawByteString;
-  LSize,LTotalSize: Integer;
+  LSize, LTotalSize: Integer;
 begin
   FInputRaw := '';
-  FOutputRaw := '';
+  FOutPutRaw := '';
   LTotalSize := 0;
 
   // Read from the LSP server
@@ -412,7 +426,8 @@ begin
     begin
       LSize := AContext.Connection.IOHandler.InputBuffer.Size;
       LTotalSize := LTotalSize + LSize;
-      AContext.Connection.IOHandler.InputBuffer.ExtractToBytes(buf,LSize,True);
+      AContext.Connection.IOHandler.InputBuffer.ExtractToBytes(buf,
+        LSize, true);
     end
     else
       Break;
@@ -443,42 +458,43 @@ begin
   end;
 
   // Check for data to send to the LSP server
-  if FOutputRaw = '' then
+  if FOutPutRaw = '' then
     Synchronize(GetDataFromClient);
 
   // Write to the LSP server
-  if AContext.Connection.IOHandler.Connected and (FOutputRaw <> '') then
+  if AContext.Connection.IOHandler.Connected and (FOutPutRaw <> '') then
   begin
-    SetLength(buf, Length(FOutputRaw));
-    Move(FOutputRaw[1], buf[0], Length(FOutputRaw));
+    SetLength(buf, Length(FOutPutRaw));
+    Move(FOutPutRaw[1], buf[0], Length(FOutPutRaw));
     AContext.Connection.IOHandler.Write(buf);
-    FOutputRaw := '';
+    FOutPutRaw := '';
   end;
   sleep(20);
 end;
 
-procedure TLSPExecuteServerThread.RunServerThroughSocket(const ACommandline: String);
+procedure TLSPExecuteServerThread.RunServerThroughSocket
+  (const ACommandline: String);
 var
   SI: TStartupInfo;
   SA: TSecurityAttributes;
   SD: PSECURITY_DESCRIPTOR;
 begin
-  FExitcode := 0;
+  FExitCode := 0;
 
   with SA do
   begin
     GetMem(SD, sizeof(SECURITY_DESCRIPTOR));
     InitializeSecurityDescriptor(SD, SECURITY_DESCRIPTOR_REVISION);
-    SetSecurityDescriptorDacl(SD, True, nil, False);
+    SetSecurityDescriptorDacl(SD, true, nil, False);
     lpSecurityDescriptor := SD;
     nLength := sizeof(SECURITY_ATTRIBUTES);
-    bInheritHandle := True;
+    bInheritHandle := true;
   end;
 
   GetStartupInfo(SI);
   with SI do
   begin
-    cb := SizeOf(SI);
+    cb := sizeof(SI);
     dwFlags := STARTF_USESHOWWINDOW;
     wShowWindow := SW_HIDE;
   end;
@@ -488,12 +504,14 @@ begin
     // Start the TCP server to allow the LSP server to connect (which act as the TCP client)
     FServer.DefaultPort := Port;
     FServer.OnExecute := IdTCPServerExecute;
-    FServer.Active := True;
+    FServer.Active := true;
     sleep(100);
 
     // Run LSP server
     SetCurrentDir(FDir);
-    if not CreateProcess(nil, PChar(ACommandline), nil, nil, True, NORMAL_PRIORITY_CLASS or CREATE_NO_WINDOW, nil, PChar(FDir), SI, FProcessInformation) then
+    if not CreateProcess(nil, PChar(ACommandline), nil, nil, true,
+      NORMAL_PRIORITY_CLASS or CREATE_NO_WINDOW, nil, PChar(FDir), SI,
+      FProcessInformation) then
     begin
       raise Exception.Create('Could not run language server!');
     end;
@@ -503,13 +521,14 @@ begin
       begin
         sleep(200);
         try
-          FServer.Active := True;
+          FServer.Active := true;
         except
           Break;
         end;
       end;
       sleep(20);
-      if WaitForSingleObject(FProcessInformation.hProcess, 0) = WAIT_OBJECT_0 then
+      if WaitForSingleObject(FProcessInformation.hProcess, 0) = WAIT_OBJECT_0
+      then
       begin
         // The server has terminated (or crashed)
         FServer.OnConnect := nil;
@@ -521,7 +540,7 @@ begin
     TerminateProcess(FProcessInformation.hProcess, 0);
 
     // Close all remaining handles
-    GetExitCodeProcess(FProcessInformation.hProcess,FExitCode);
+    GetExitCodeProcess(FProcessInformation.hProcess, FExitCode);
     CloseHandle(FProcessInformation.hThread);
     CloseHandle(FProcessInformation.hProcess);
 
@@ -535,7 +554,7 @@ begin
   end;
 
   if Assigned(FOnExit) then
-    FOnExit(Self,FExitCode);
+    FOnExit(Self, FExitCode);
 end;
 
 procedure TLSPExecuteServerThread.SendToClient;
@@ -547,7 +566,9 @@ end;
 procedure TLSPExecuteServerThread.SetArguments(const AArguments: string);
 begin
   if not AArguments.StartsWith(' ') then
-    FArguments := ' ' + AArguments else
+    FArguments := ' ' + AArguments
+  else
     FArguments := AArguments;
 end;
+
 end.
